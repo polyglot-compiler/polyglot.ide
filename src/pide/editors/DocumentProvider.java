@@ -7,7 +7,8 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 
 /**
- * Factory for creating Documents. Hooked in by {@link Editor#Editor()}.
+ * Factory for creating Documents. Hooked in by
+ * {@link AbstractEditor#AbstractEditor()}.
  */
 public class DocumentProvider extends FileDocumentProvider {
 
