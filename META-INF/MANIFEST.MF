@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PIDE
+Bundle-Name: Polyglot IDE
 Bundle-SymbolicName: polyglot.ide;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: polyglot.ide.JLPlugin
