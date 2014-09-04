@@ -5,9 +5,9 @@ import static pide.editors.ColorManager.COMMENT_COLOR;
 import static pide.editors.ColorManager.DEFAULT_COLOR;
 import static pide.editors.ColorManager.STRING_COLOR;
 import static pide.editors.PartitionScanner.BLOCK_COMMENT;
+import static pide.editors.PartitionScanner.CHAR_LITERAL;
 import static pide.editors.PartitionScanner.LINE_COMMENT;
 import static pide.editors.PartitionScanner.STRING_LITERAL;
-import static pide.editors.PartitionScanner.CHAR_LITERAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 /**
  * Provides hooks for plugging in custom editor-related UI behaviour (e.g.,
  * syntax highlighting, text hovering, code completion). This is hooked in by
- * {@link Editor#Editor()}.
+ * {@link AbstractEditor#AbstractEditor()}.
  */
 public class SourceViewerConfiguration extends
     org.eclipse.jface.text.source.SourceViewerConfiguration {
