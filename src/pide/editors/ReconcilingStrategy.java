@@ -72,10 +72,16 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
       // TODO Need a better way of setting up these options.
       Options options = extInfo.getOptions();
       Options.global = options;
-      options.parseCommandLine(new String[] { "-cp",
-          "/home/jed/work/jif/rt-classes", "-sigcp",
-          "/home/jed/work/jif/sig-classes", "-d", "/tmp", "/dev/null" },
-          new HashSet<>());
+      boolean useJif = true;
+      if (useJif) {
+        options.parseCommandLine(new String[] { "-cp",
+            "/home/jed/work/jif/rt-classes", "-sigcp",
+            "/home/jed/work/jif/sig-classes", "-d", "/tmp", "/dev/null" },
+            new HashSet<>());
+      } else {
+        options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null" },
+            new HashSet<>());
+      }
     } catch (UsageError e) {
       ErrorUtil.handleError(Level.ERROR, "pide", "Compiler error",
           "An error occurred while configuring the compiler.", e, Style.LOG);

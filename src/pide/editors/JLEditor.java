@@ -1,12 +1,17 @@
 package pide.editors;
 
-import jif.ExtensionInfo;
+import polyglot.frontend.ExtensionInfo;
 
 public class JLEditor extends AbstractEditor {
 
   @Override
   public ExtensionInfo extInfo() {
-    return new ExtensionInfo();
+    boolean useJif = true;
+    if (useJif) {
+      return new jif.ExtensionInfo();
+    } else {
+      return new polyglot.frontend.JLExtensionInfo();
+    }
   }
 
 }
