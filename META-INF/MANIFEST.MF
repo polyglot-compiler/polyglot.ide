@@ -17,5 +17,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: classes,
  lib/java_cup.jar,
  lib/jflex.jar,
- lib/polyglot.jar,
- lib/jif.jar
+ lib/polyglot.jar
