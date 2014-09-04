@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import java.util.HashMap;
 import java.util.Map;

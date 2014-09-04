@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 /**
  * The model in MVC lingo. Hooked in by

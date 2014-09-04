@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,12 +19,12 @@ import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.source.ISourceViewer;
 
-import pide.common.ErrorUtil;
-import pide.common.ErrorUtil.Level;
-import pide.common.ErrorUtil.Style;
 import polyglot.frontend.Compiler;
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.Source;
+import polyglot.ide.common.ErrorUtil;
+import polyglot.ide.common.ErrorUtil.Level;
+import polyglot.ide.common.ErrorUtil.Style;
 import polyglot.main.Options;
 import polyglot.main.UsageError;
 import polyglot.util.SilentErrorQueue;
@@ -75,7 +75,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
       options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null" },
           new HashSet<>());
     } catch (UsageError e) {
-      ErrorUtil.handleError(Level.ERROR, "pide", "Compiler error",
+      ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
           "An error occurred while configuring the compiler.", e, Style.LOG);
     }
 
@@ -173,7 +173,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     try {
       success = compiler.validate(Collections.singleton(source));
     } catch (Throwable t) {
-      ErrorUtil.handleError(Level.ERROR, "pide", "Compiler error",
+      ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
           "An internal compiler error occurred.", t, Style.LOG, Style.SHOW);
       return;
     }
@@ -191,8 +191,8 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
                 Level.ERROR);
       }
 
-      ErrorUtil.handleError(severity, "pide", "Error updating problem markers",
-          e.getMessage(), e, Style.SHOW);
+      ErrorUtil.handleError(severity, "polyglot.ide",
+	  "Error updating problem markers", e.getMessage(), e, Style.SHOW);
     }
   }
 }

@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import static polyglot.util.Position.END_UNUSED;
 import static polyglot.util.Position.UNKNOWN;

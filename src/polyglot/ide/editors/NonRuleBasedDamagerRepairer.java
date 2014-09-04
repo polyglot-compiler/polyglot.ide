@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;

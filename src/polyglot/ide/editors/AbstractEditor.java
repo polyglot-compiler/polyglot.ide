@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;

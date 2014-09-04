@@ -5,8 +5,8 @@
 		<editor
 				name="Polyglot Editor"
 				extensions="jl"
-				class="pide.editors.JLEditor"
-				id="pide.editors.Editor"
+				class="polyglot.ide.editors.JLEditor"
+				id="polyglot.ide.editors.Editor"
 		/>
 	</extension>
 	<extension
@@ -14,18 +14,18 @@
 			id="jlnature"
 			name="JL nature">
 		<runtime>
-			<run class="pide.natures.JLNature"/>
+			<run class="polyglot.ide.natures.JLNature"/>
 		</runtime>
 	</extension>
 	<extension
 			point="org.eclipse.ui.newWizards">
 		<category
-				id="pide.category.wizards"
+				id="polyglot.ide.category.wizards"
 				name="JL"/>
 		<wizard
-				category="pide.category.wizards"
-				class="pide.wizards.NewJLProjectWizard"
-				id="pide.wizards.new.jlproject"
+				category="polyglot.ide.category.wizards"
+				class="polyglot.ide.wizards.NewJLProjectWizard"
+				id="polyglot.ide.wizards.new.jlproject"
 				name="JL Project"
 				project="true"/>
 	</extension>

@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;

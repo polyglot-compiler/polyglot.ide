@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.JLExtensionInfo;

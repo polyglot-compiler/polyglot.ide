@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;

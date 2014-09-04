@@ -3,7 +3,7 @@
  * practice says we should subclass, but BasicNewProjectResourceWizard is not
  * intended to be subclassed.
  */
-package pide.wizards;
+package polyglot.ide.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -27,9 +27,9 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.ide.undo.CreateProjectOperation;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 
-import pide.common.ErrorUtil;
-import pide.common.ErrorUtil.Level;
-import pide.common.ErrorUtil.Style;
+import polyglot.ide.common.ErrorUtil;
+import polyglot.ide.common.ErrorUtil.Level;
+import polyglot.ide.common.ErrorUtil.Style;
 
 public class NewJLProjectWizard extends Wizard implements INewWizard {
 
@@ -146,7 +146,7 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
 
         // Handle errors caused by case-insensitive file systems.
         if (cause.getStatus().getCode() == IResourceStatus.CASE_VARIANT_EXISTS) {
-          ErrorUtil.handleError(Level.WARNING, "pide",
+          ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
               "Error creating project",
               "The underlying file system is case insensitive. There is an "
                   + "existing project or directory that conflicts with '"
@@ -156,12 +156,13 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
 
         ErrorUtil.handleError(
             ErrorUtil.toLevel(cause.getStatus().getSeverity(), Level.WARNING),
-            "pide", "Error creating project", cause, Style.BLOCK);
+            "polyglot.ide", "Error creating project", cause, Style.BLOCK);
         return null;
       }
 
-      ErrorUtil.handleError(Level.WARNING, "pide", "Error creating project",
-          "Internal error: " + t.getMessage(), t, Style.LOG, Style.BLOCK);
+      ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
+	  "Error creating project", "Internal error: " + t.getMessage(), t,
+	  Style.LOG, Style.BLOCK);
       return null;
     }
   }

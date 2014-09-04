@@ -1,13 +1,13 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import static org.eclipse.jface.text.IDocument.DEFAULT_CONTENT_TYPE;
-import static pide.editors.ColorManager.COMMENT_COLOR;
-import static pide.editors.ColorManager.DEFAULT_COLOR;
-import static pide.editors.ColorManager.STRING_COLOR;
-import static pide.editors.PartitionScanner.BLOCK_COMMENT;
-import static pide.editors.PartitionScanner.CHAR_LITERAL;
-import static pide.editors.PartitionScanner.LINE_COMMENT;
-import static pide.editors.PartitionScanner.STRING_LITERAL;
+import static polyglot.ide.editors.ColorManager.COMMENT_COLOR;
+import static polyglot.ide.editors.ColorManager.DEFAULT_COLOR;
+import static polyglot.ide.editors.ColorManager.STRING_COLOR;
+import static polyglot.ide.editors.PartitionScanner.BLOCK_COMMENT;
+import static polyglot.ide.editors.PartitionScanner.CHAR_LITERAL;
+import static polyglot.ide.editors.PartitionScanner.LINE_COMMENT;
+import static polyglot.ide.editors.PartitionScanner.STRING_LITERAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;

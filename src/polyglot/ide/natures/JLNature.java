@@ -1,4 +1,4 @@
-package pide.natures;
+package polyglot.ide.natures;
 
 import org.eclipse.core.runtime.CoreException;
 

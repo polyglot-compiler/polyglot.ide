@@ -1,9 +1,9 @@
-package pide.editors;
+package polyglot.ide.editors;
 
-import static pide.editors.ColorManager.COMMENT_COLOR;
-import static pide.editors.ColorManager.DEFAULT_COLOR;
-import static pide.editors.ColorManager.KEYWORD_COLOR;
-import static pide.editors.ColorManager.STRING_COLOR;
+import static polyglot.ide.editors.ColorManager.COMMENT_COLOR;
+import static polyglot.ide.editors.ColorManager.DEFAULT_COLOR;
+import static polyglot.ide.editors.ColorManager.KEYWORD_COLOR;
+import static polyglot.ide.editors.ColorManager.STRING_COLOR;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package pide.editors;
+package polyglot.ide.editors;
 
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;

@@ -2,7 +2,7 @@
  * Includes code cribbed from StatusUtil. Copied here because StatusUtil is an
  * internal API.
  */
-package pide.common;
+package polyglot.ide.common;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
