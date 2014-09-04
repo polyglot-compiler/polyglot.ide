@@ -4,41 +4,33 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * Controls the plug-in life cycle. Referenced from plug-in manifest.
  */
-public class Activator extends AbstractUIPlugin {
+public abstract class AbstractPlugin extends AbstractUIPlugin {
 
   // The plug-in ID
   public static final String PLUGIN_ID = "polyglot.ide"; //$NON-NLS-1$
 
-  // The shared instance
-  private static Activator plugin;
+  /**
+   * Sets the shared instance to {@code this}.
+   */
+  protected abstract void setInstance();
 
   /**
-   * The constructor
+   * Clears the shared instance.
    */
-  public Activator() {
-  }
+  protected abstract void clearInstance();
 
   @Override
   public void start(BundleContext context) throws Exception {
     super.start(context);
-    plugin = this;
+    setInstance();
   }
 
   @Override
   public void stop(BundleContext context) throws Exception {
-    plugin = null;
+    clearInstance();
     super.stop(context);
-  }
-
-  /**
-   * Returns the shared instance
-   *
-   * @return the shared instance
-   */
-  public static Activator getDefault() {
-    return plugin;
   }
 
 }
