@@ -1,6 +1,7 @@
 package polyglot.ide.editors;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,6 +12,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -22,6 +24,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import polyglot.frontend.Compiler;
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.Source;
+import polyglot.ide.common.ClasspathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -65,15 +68,26 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
   protected void validate() {
     // Set up Polyglot.
     // We use a fresh ExtensionInfo each time, because the goals in the old
-    // ExtensionInfo will have stale state that will cause passes to not be run.
+    // ExtensionInfo will have stale state that will cause passes to not be
+    // run.
+
+    IProject project = editor.getFile().getProject();
+    if (project == null || !project.isAccessible()) return;
+
+    File classpathFile =
+        project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
+        .toFile();
+
+    String classpath = ClasspathUtil.parse(classpathFile);
+
     ExtensionInfo extInfo = editor.extInfo();
     SilentErrorQueue eq = new SilentErrorQueue(100, "parser");
     try {
       // TODO Need a better way of setting up these options.
       Options options = extInfo.getOptions();
       Options.global = options;
-      options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null" },
-          new HashSet<>());
+      options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null",
+          "-classpath", classpath }, new HashSet<String>());
     } catch (UsageError e) {
       ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
           "An error occurred while configuring the compiler.", e, Style.LOG);
@@ -192,7 +206,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
       }
 
       ErrorUtil.handleError(severity, "polyglot.ide",
-	  "Error updating problem markers", e.getMessage(), e, Style.SHOW);
+          "Error updating problem markers", e.getMessage(), e, Style.SHOW);
     }
   }
 }

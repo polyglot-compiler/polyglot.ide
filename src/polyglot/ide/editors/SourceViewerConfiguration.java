@@ -14,8 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.text.IAutoEditStrategy;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
@@ -25,6 +28,8 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.DefaultAnnotationHover;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Provides hooks for plugging in custom editor-related UI behaviour (e.g.,
@@ -32,7 +37,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * {@link AbstractEditor#AbstractEditor()}.
  */
 public class SourceViewerConfiguration extends
-    org.eclipse.jface.text.source.SourceViewerConfiguration {
+org.eclipse.jface.text.source.SourceViewerConfiguration {
 
   private final Editor editor;
   private final ColorManager colorManager;
@@ -128,6 +133,23 @@ public class SourceViewerConfiguration extends
   }
 
   @Override
+  public IContentAssistant getContentAssistant(ISourceViewer sv) {
+    ContentAssistant assistant = new ContentAssistant();
+
+    assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sv));
+    assistant.setContentAssistProcessor(new PolyglotContentAssistProcessor(),
+        IDocument.DEFAULT_CONTENT_TYPE);
+
+    assistant.setAutoActivationDelay(0);
+    assistant.enableAutoActivation(true);
+
+    assistant.setProposalSelectorBackground(Display.getDefault()
+        .getSystemColor(SWT.COLOR_WHITE));
+
+    return assistant;
+  }
+
+  @Override
   public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
     return new DefaultAnnotationHover();
   }
@@ -136,5 +158,4 @@ public class SourceViewerConfiguration extends
   public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
     return new TextHover();
   }
-
 }

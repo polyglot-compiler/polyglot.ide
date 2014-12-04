@@ -28,5 +28,35 @@
 				id="polyglot.ide.wizards.new.jlproject"
 				name="JL Project"
 				project="true"/>
+	</extension>	
+	<extension
+      id="polyglot.ide.builder.jlBuilder" name="JL Project Builder" point="org.eclipse.core.resources.builders">
+      <builder>
+         <run class="polyglot.ide.JLProjectBuilder">
+         </run>
+      </builder>
+   </extension>
+   
+  	<extension point="org.eclipse.ui.menus">
+  		<menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=export">
+     		<menu id="buildPathMenu" label="Build Path">
+     		<command
+           		commandId="polyglot.ide.commands.configureBuildPathCommand"
+           		label="Configure Build Path..."
+           		style="push">
+     		</command>
+     		</menu>
+  		</menuContribution>
 	</extension>
+	
+	<extension point="org.eclipse.ui.commands">
+		<command id="polyglot.ide.commands.configureBuildPathCommand" name="Configure Build Path Command" />
+	</extension>
+	
+	<extension point="org.eclipse.ui.handlers">
+      <handler
+            class="polyglot.ide.wizards.ConfigureBuildPathCommandHandler"
+            commandId="polyglot.ide.commands.configureBuildPathCommand">
+      </handler>
+    </extension>
 </plugin>

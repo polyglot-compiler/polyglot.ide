@@ -1,48 +1,61 @@
 package polyglot.ide.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClasspathEntry {
 
-	public enum ClasspathEntryKind {
-		SRC, CON, LIB, OUTPUT;
-	}
+  public enum ClasspathEntryKind {
+    SRC, CON, LIB, OUTPUT;
 
-	private ClasspathEntryKind kind;
-	private String path;
-	private String sourcePath;
+    static Map<String, ClasspathEntryKind> map = buildMap();
 
-	public ClasspathEntry(ClasspathEntryKind kind, String path) {
-		this.kind = kind;
-		this.path = path;
-	}
+    private static Map<String, ClasspathEntryKind> buildMap() {
+      map = new HashMap<>();
 
-	public ClasspathEntryKind getKind() {
-		return kind;
-	}
+      for (ClasspathEntryKind kind : ClasspathEntryKind.values())
+        map.put(kind.name().toLowerCase(), kind);
 
-	public void setKind(ClasspathEntryKind kind) {
-		this.kind = kind;
-	}
+      return map;
+    }
+  }
 
-	public String getPath() {
-		return path;
-	}
+  private ClasspathEntryKind kind;
+  private String path;
+  private String sourcePath;
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+  public ClasspathEntry(ClasspathEntryKind kind, String path) {
+    this.kind = kind;
+    this.path = path;
+  }
 
-	public String getSourcePath() {
-		return sourcePath;
-	}
+  public ClasspathEntryKind getKind() {
+    return kind;
+  }
 
-	public void setSourcePath(String sourcePath) {
-		System.out.println("");
-		this.sourcePath = sourcePath;
-	}
+  public void setKind(ClasspathEntryKind kind) {
+    this.kind = kind;
+  }
 
-	@Override
-	public String toString() {
-		return "ClasspathEntry [kind=" + kind + ", path=" + path
-				+ ", sourcePath=" + sourcePath + "]";
-	}
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+  public String getSourcePath() {
+    return sourcePath;
+  }
+
+  public void setSourcePath(String sourcePath) {
+    this.sourcePath = sourcePath;
+  }
+
+  @Override
+  public String toString() {
+    return "ClasspathEntry [kind=" + kind + ", path=" + path + ", sourcePath="
+        + sourcePath + "]";
+  }
 }
