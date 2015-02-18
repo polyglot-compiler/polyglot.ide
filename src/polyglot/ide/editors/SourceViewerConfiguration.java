@@ -19,6 +19,8 @@ import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
+import org.eclipse.jface.text.hyperlink.URLHyperlinkDetector;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
@@ -157,5 +159,11 @@ org.eclipse.jface.text.source.SourceViewerConfiguration {
   @Override
   public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
     return new TextHover();
+  }
+
+  @Override
+  public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
+    return new IHyperlinkDetector[] { new JLHyperlinkDetector(),
+        new URLHyperlinkDetector() };
   }
 }

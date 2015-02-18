@@ -12,9 +12,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.jdt.ui,
  org.eclipse.jdt.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: classes,
  lib/polyglot.jar,
  lib/java_cup.jar,
  lib/jflex.jar
+Export-Package: polyglot.frontend,
+ polyglot.ide,
+ polyglot.ide.common,
+ polyglot.ide.editors,
+ polyglot.ide.natures,
+ polyglot.ide.wizards

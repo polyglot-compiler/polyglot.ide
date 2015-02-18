@@ -49,14 +49,14 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
   /**
    * The object selection with which this wizard was initialized.
    */
-  private IStructuredSelection selection;
+  protected IStructuredSelection selection;
 
   /**
    * The first page to be displayed.
    */
-  private WizardNewProjectCreationPage pageOne;
+  protected WizardNewProjectCreationPage pageOne;
 
-  private NewJLProjectWizardPageTwo pageTwo;
+  protected NewJLProjectWizardPageTwo pageTwo;
 
   /**
    * The project created by this wizard, or {@code null} if it has yet to be
@@ -85,8 +85,6 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
 
   @Override
   public void addPages() {
-    super.addPages();
-
     pageOne = new WizardNewProjectCreationPage("newJLProjectPageOne") {
       @Override
       public void createControl(Composite parent) {
@@ -213,11 +211,11 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
           new SubProgressMonitor(new NullProgressMonitor(), 1));
     } catch (CoreException e) {
       ErrorUtil
-      .handleError(
-          ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
-          "polyglot.ide",
-          "Error initializing project structure. Please check file permissions",
-          e.getCause(), Style.BLOCK);
+          .handleError(
+              ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
+              "polyglot.ide",
+              "Error initializing project structure. Please check file permissions",
+              e.getCause(), Style.BLOCK);
     }
   }
 

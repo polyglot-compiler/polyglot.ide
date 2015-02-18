@@ -59,4 +59,13 @@
             commandId="polyglot.ide.commands.configureBuildPathCommand">
       </handler>
     </extension>
+    
+    <extension
+  point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+  <target
+    id="org.eclipse.jdt.ui.javaCode"
+    name="Java Editor">
+    <context type="org.eclipse.ui.texteditor.ITextEditor"/>
+  </target>
+</extension>
 </plugin>

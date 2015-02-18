@@ -25,7 +25,7 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
 
     File classpathFile =
         getProject().getFile(ClasspathUtil.CLASSPATH_FILE_NAME)
-        .getRawLocation().toFile();
+            .getRawLocation().toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
     ExtensionInfo extInfo = new JLExtensionInfo();
@@ -61,7 +61,7 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
     for (File file : baseDir.listFiles()) {
       if (file.isDirectory())
         collectAllFiles(file, files);
-      else files.add(file.toString());
+      else if (file.length() != 0) files.add(file.toString());
     }
   }
 }

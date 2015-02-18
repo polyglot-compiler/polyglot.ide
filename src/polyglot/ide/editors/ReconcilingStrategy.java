@@ -76,7 +76,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
     File classpathFile =
         project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
-        .toFile();
+            .toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
 
