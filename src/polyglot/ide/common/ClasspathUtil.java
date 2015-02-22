@@ -16,6 +16,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import polyglot.ide.common.ClasspathEntry.ClasspathEntryKind;
+import polyglot.ide.common.ClasspathEntry.ClasspathEntryType;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
 
@@ -24,7 +25,7 @@ import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter;
 public class ClasspathUtil {
   public static String CLASSPATH_FILE_NAME = ".classpath";
 
-  public static void createClassPathFile(IProject project,
+  public static void createClasspathFile(IProject project,
       List<ClasspathEntry> classpathEntries) throws Exception {
 
     String fullClasspath =
@@ -40,7 +41,8 @@ public class ClasspathUtil {
     xtw.writeStartElement("classpath");
 
     for (ClasspathEntry classpathEntry : classpathEntries) {
-      xtw.writeEmptyElement("classpathentry");
+      xtw.writeEmptyElement(classpathEntry.getClasspathEntryType().name()
+          .toLowerCase());
 
       xtw.writeAttribute("kind", classpathEntry.getKind().name().toLowerCase());
       xtw.writeAttribute("path", classpathEntry.getPath());
@@ -58,27 +60,48 @@ public class ClasspathUtil {
    * Reads a ".classpath" file and turns it into a string formatted to fit the
    * CLASSPATH variable.
    */
+  public static String parse(File dotClasspath,
+      ClasspathEntryType classpathEntryType) {
+    ClasspathContentHandler contentHandler =
+        getContentHandler(dotClasspath, classpathEntryType);
+    if (contentHandler != null)
+      return contentHandler.getClasspathString();
+    else return "";
+  }
+
   public static String parse(File dotClasspath) {
-    ClasspathContentHandler contentHandler = getContentHandler(dotClasspath);
+    ClasspathContentHandler contentHandler =
+        getContentHandler(dotClasspath, ClasspathEntryType.CLASSPATHENTRY);
     if (contentHandler != null)
       return contentHandler.getClasspathString();
     else return "";
   }
 
   public static List<ClasspathEntry> getClasspathEntries(File dotClasspath) {
-    ClasspathContentHandler contentHandler = getContentHandler(dotClasspath);
+    ClasspathContentHandler contentHandler =
+        getContentHandler(dotClasspath, ClasspathEntryType.CLASSPATHENTRY);
     if (contentHandler != null)
       return contentHandler.getClasspathEntries();
     else return new ArrayList<>();
   }
 
-  private static ClasspathContentHandler getContentHandler(File dotClasspath) {
+  public static List<ClasspathEntry> getClasspathEntries(File dotClasspath,
+      ClasspathEntryType classpathEntryType) {
+    ClasspathContentHandler contentHandler =
+        getContentHandler(dotClasspath, classpathEntryType);
+    if (contentHandler != null)
+      return contentHandler.getClasspathEntries();
+    else return new ArrayList<>();
+  }
+
+  private static ClasspathContentHandler getContentHandler(File dotClasspath,
+      ClasspathEntryType classpathEntryType) {
     try {
       SAXParserFactory spf = SAXParserFactory.newInstance();
       spf.setNamespaceAware(true);
       XMLReader parser = spf.newSAXParser().getXMLReader();
       ClasspathContentHandler classpathContentHandler =
-          new ClasspathContentHandler(dotClasspath);
+          new ClasspathContentHandler(dotClasspath, classpathEntryType);
       parser.setContentHandler(classpathContentHandler);
       parser.parse(dotClasspath.toString());
       return classpathContentHandler;
@@ -93,11 +116,14 @@ public class ClasspathUtil {
     StringBuilder buf;
     File dotClasspath;
     List<ClasspathEntry> classpathEntries;
+    ClasspathEntryType classpathEntryType;
 
-    ClasspathContentHandler(File dotClasspath) {
+    ClasspathContentHandler(File dotClasspath,
+        ClasspathEntryType classpathEntryType) {
       buf = new StringBuilder();
       this.dotClasspath = dotClasspath;
       this.classpathEntries = new ArrayList<>();
+      this.classpathEntryType = classpathEntryType;
     }
 
     public String getClasspathString() {
@@ -119,7 +145,7 @@ public class ClasspathUtil {
     @Override
     public void startElement(String uri, String localName, String qname,
         Attributes atts) {
-      if (!localName.equals("classpathentry")) return; // unknown
+      if (!localName.equals(classpathEntryType.name().toLowerCase())) return; // unknown
 
       String kind = atts.getValue("kind");
       if (kind == null) return;

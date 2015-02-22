@@ -62,25 +62,22 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
    * The project created by this wizard, or {@code null} if it has yet to be
    * created.
    */
-  private IProject project;
-
-  private List<LibraryResource> libraryResourceList;
+  protected IProject project;
 
   @Override
   public void init(IWorkbench workbench, IStructuredSelection selection) {
     this.selection = selection;
     setNeedsProgressMonitor(true);
-    setWindowTitle("New JL Project");
+    setWindowTitle(getTitle());
   }
 
   @Override
   public boolean performFinish() {
-    libraryResourceList = pageTwo.getLibraries();
+    return createProject() != null;
+  }
 
-    if (createProject() == null) return false;
-
-    // TODO: update perspective and open the project
-    return true;
+  protected String getTitle() {
+    return "New JL Project";
   }
 
   @Override
@@ -92,8 +89,6 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
         createWorkingSetGroup((Composite) getControl(), selection,
             new String[] { "org.eclipse.ui.resourceWorkingSetPage" });
         Dialog.applyDialogFont(getControl());
-
-        // TODO add project-layout controls
       }
     };
     pageOne.setTitle("Create a JL Project");
@@ -127,18 +122,16 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
     if (project != null) return project;
 
     // Obtain the project handle and descriptor.
-    final IProject newProjectHandle = pageOne.getProjectHandle();
+    project = pageOne.getProjectHandle();
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     final IProjectDescription description =
-        workspace.newProjectDescription(newProjectHandle.getName());
+        workspace.newProjectDescription(project.getName());
 
     // Set the project's location.
     final URI location =
         pageOne.useDefaults() ? null : pageOne.getLocationURI();
     description.setLocationURI(location);
-
-    // TODO add JL nature
 
     // Create the project in a separate thread.
     try {
@@ -156,13 +149,15 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
         }
       });
 
-      createSrcBinFolders(newProjectHandle);
+      addNature();
 
-      createClasspathFile(newProjectHandle);
+      createSrcBinFolders();
 
-      associateBuilder(newProjectHandle);
+      createClasspathFile();
 
-      return project = newProjectHandle;
+      associateBuilder();
+
+      return project;
     } catch (InterruptedException e) {
       return null;
     } catch (InvocationTargetException e) {
@@ -177,7 +172,7 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
               "Error creating project",
               "The underlying file system is case insensitive. There is an "
                   + "existing project or directory that conflicts with '"
-                  + newProjectHandle.getName() + "'.", cause, Style.BLOCK);
+                  + project.getName() + "'.", cause, Style.BLOCK);
           return null;
         }
 
@@ -194,7 +189,23 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
     }
   }
 
-  private void createSrcBinFolders(IProject project) {
+  protected void addNature() {
+    try {
+      final IProjectDescription description =
+          ResourcesPlugin.getWorkspace().newProjectDescription(
+              project.getName());
+      String[] natures = description.getNatureIds();
+      String[] newNatures = new String[natures.length + 1];
+      System.arraycopy(natures, 0, newNatures, 0, natures.length);
+      newNatures[natures.length] = "polyglot.ide.natures.jlnature";
+      description.setNatureIds(newNatures);
+      project.setDescription(description, null);
+    } catch (CoreException e) {
+      // Something went wrong
+    }
+  }
+
+  private void createSrcBinFolders() {
     IPath srcFolderPath =
         new Path(project.getName()).makeAbsolute().append("src");
     IPath binFolderPath =
@@ -211,17 +222,18 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
           new SubProgressMonitor(new NullProgressMonitor(), 1));
     } catch (CoreException e) {
       ErrorUtil
-          .handleError(
-              ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
-              "polyglot.ide",
-              "Error initializing project structure. Please check file permissions",
-              e.getCause(), Style.BLOCK);
+      .handleError(
+          ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
+          "polyglot.ide",
+          "Error initializing project structure. Please check file permissions",
+          e.getCause(), Style.BLOCK);
     }
   }
 
-  private void createClasspathFile(IProject project) {
+  protected void createClasspathFile() {
     List<ClasspathEntry> classpathEntries = new ArrayList<>();
     classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.SRC, "src"));
+    List<LibraryResource> libraryResourceList = pageTwo.getClasspathEntries();
 
     if (libraryResourceList != null)
       for (LibraryResource libraryResource : libraryResourceList)
@@ -231,7 +243,7 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
     classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.OUTPUT, "bin"));
 
     try {
-      ClasspathUtil.createClassPathFile(project, classpathEntries);
+      ClasspathUtil.createClasspathFile(project, classpathEntries);
     } catch (Exception e) {
       ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
           "Error creating dot-classpath file. Please check file permissions",
@@ -239,7 +251,7 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
     }
   }
 
-  private void associateBuilder(IProject project) {
+  private void associateBuilder() {
     try {
       final String BUILDER_ID = "polyglot.ide.builder.jlBuilder";
       IProjectDescription desc = project.getDescription();

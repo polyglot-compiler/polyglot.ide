@@ -20,37 +20,42 @@ public class ClasspathEntry {
     }
   }
 
+  public enum ClasspathEntryType {
+    CLASSPATHENTRY, SIGPATHENTRY
+  }
+
   private ClasspathEntryKind kind;
   private String path;
   private String sourcePath;
+  private ClasspathEntryType classpathEntryType;
 
   public ClasspathEntry(ClasspathEntryKind kind, String path) {
     this.kind = kind;
     this.path = path;
+    this.classpathEntryType = ClasspathEntryType.CLASSPATHENTRY;
+  }
+
+  public ClasspathEntry(ClasspathEntryKind kind, String path,
+      ClasspathEntryType classpathEntryType) {
+    this.kind = kind;
+    this.path = path;
+    this.classpathEntryType = classpathEntryType;
   }
 
   public ClasspathEntryKind getKind() {
     return kind;
   }
 
-  public void setKind(ClasspathEntryKind kind) {
-    this.kind = kind;
-  }
-
   public String getPath() {
     return path;
-  }
-
-  public void setPath(String path) {
-    this.path = path;
   }
 
   public String getSourcePath() {
     return sourcePath;
   }
 
-  public void setSourcePath(String sourcePath) {
-    this.sourcePath = sourcePath;
+  public ClasspathEntryType getClasspathEntryType() {
+    return classpathEntryType;
   }
 
   @Override

@@ -18,8 +18,8 @@ import polyglot.ide.common.ClasspathEntry;
 import polyglot.ide.common.ClasspathUtil;
 
 public class NewJLProjectWizardPageTwo extends NewElementWizardPage {
-  private LibrarySelector librarySelector;
-  private IProject project;
+  protected LibrarySelector classpathSelector;
+  protected IProject project;
 
   public NewJLProjectWizardPageTwo(String name) {
     super(name);
@@ -45,18 +45,18 @@ public class NewJLProjectWizardPageTwo extends NewElementWizardPage {
     tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
     tabFolder.setFont(composite.getFont());
 
-    librarySelector = new LibrarySelector(tabFolder);
-    if (project != null) librarySelector.setItems(getClasspathEntries());
+    classpathSelector = new LibrarySelector(tabFolder);
+    if (project != null) classpathSelector.setItems(extractClasspathEntries());
 
     TabItem item = new TabItem(tabFolder, SWT.NONE);
     item.setText("&Libraries");
-    item.setControl(librarySelector);
+    item.setControl(classpathSelector);
 
     Dialog.applyDialogFont(composite);
     setControl(composite);
   }
 
-  private List<LibraryResource> getClasspathEntries() {
+  protected List<LibraryResource> extractClasspathEntries() {
     File classpathFile =
         project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
         .toFile();
@@ -70,7 +70,7 @@ public class NewJLProjectWizardPageTwo extends NewElementWizardPage {
     return items;
   }
 
-  public List<LibraryResource> getLibraries() {
-    return librarySelector.getItems();
+  public List<LibraryResource> getClasspathEntries() {
+    return classpathSelector.getItems();
   }
 }
