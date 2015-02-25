@@ -18,9 +18,3 @@ Bundle-ClassPath: classes,
  lib/polyglot.jar,
  lib/java_cup.jar,
  lib/jflex.jar
-Export-Package: polyglot.frontend,
- polyglot.ide,
- polyglot.ide.common,
- polyglot.ide.editors,
- polyglot.ide.natures,
- polyglot.ide.wizards

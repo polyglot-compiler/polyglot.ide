@@ -61,6 +61,26 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     validate();
   }
 
+  protected void setupCompilerOptions(ExtensionInfo extInfo) {
+    IProject project = editor.getFile().getProject();
+    File classpathFile =
+        project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
+            .toFile();
+
+    String classpath = ClasspathUtil.parse(classpathFile);
+
+    try {
+      // TODO Need a better way of setting up these options.
+      Options options = extInfo.getOptions();
+      Options.global = options;
+      options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null",
+          "-classpath", classpath }, new HashSet<String>());
+    } catch (UsageError e) {
+      ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
+          "An error occurred while configuring the compiler.", e, Style.LOG);
+    }
+  }
+
   /**
    * Runs all compiler passes up until the translation/serialization/output
    * passes.
@@ -74,25 +94,9 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     IProject project = editor.getFile().getProject();
     if (project == null || !project.isAccessible()) return;
 
-    File classpathFile =
-        project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
-            .toFile();
-
-    String classpath = ClasspathUtil.parse(classpathFile);
-
     ExtensionInfo extInfo = editor.extInfo();
     SilentErrorQueue eq = new SilentErrorQueue(100, "parser");
-    try {
-      // TODO Need a better way of setting up these options.
-      Options options = extInfo.getOptions();
-      Options.global = options;
-      options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null",
-          "-classpath", classpath }, new HashSet<String>());
-    } catch (UsageError e) {
-      ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
-          "An error occurred while configuring the compiler.", e, Style.LOG);
-    }
-
+    setupCompilerOptions(extInfo);
     Compiler compiler = new Compiler(extInfo, eq);
 
     // Create a Source object out of the document's contents.

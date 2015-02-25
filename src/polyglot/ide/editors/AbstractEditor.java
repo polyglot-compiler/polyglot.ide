@@ -19,7 +19,7 @@ import polyglot.util.SilentErrorQueue;
  */
 public abstract class AbstractEditor extends TextEditor implements Editor {
 
-  private ColorManager colorManager;
+  protected ColorManager colorManager;
 
   public AbstractEditor() {
     // Hook in the document provider.
@@ -27,8 +27,11 @@ public abstract class AbstractEditor extends TextEditor implements Editor {
 
     // Hook in the source viewer configuration.
     colorManager = new ColorManager();
-    setSourceViewerConfiguration(new SourceViewerConfiguration(this,
-        colorManager));
+    setSourceViewerConfiguration(createSourceViewerConfiguration());
+  }
+
+  protected SourceViewerConfiguration createSourceViewerConfiguration() {
+    return new SourceViewerConfiguration(this, colorManager);
   }
 
   @Override
@@ -70,17 +73,17 @@ public abstract class AbstractEditor extends TextEditor implements Editor {
 
   @Override
   public void addProblemMarker(ErrorInfo error) throws CoreException,
-      BadLocationException {
+  BadLocationException {
     addProblemMarker(
         error.getMessage(),
         PolyglotUtil.convert(getSourceViewer().getDocument(),
             error.getPosition()),
-        PolyglotUtil.convertErrorKind(error.getErrorKind()));
+            PolyglotUtil.convertErrorKind(error.getErrorKind()));
   }
 
   @Override
   public void addProblemMarkers(SilentErrorQueue eq) throws CoreException,
-      BadLocationException {
+  BadLocationException {
     for (ErrorInfo error : eq) {
       addProblemMarker(error);
     }
@@ -88,7 +91,7 @@ public abstract class AbstractEditor extends TextEditor implements Editor {
 
   @Override
   public void setProblemMarkers(SilentErrorQueue eq) throws CoreException,
-      BadLocationException {
+  BadLocationException {
     clearProblemMarkers();
     addProblemMarkers(eq);
   }

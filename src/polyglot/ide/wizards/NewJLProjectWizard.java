@@ -253,13 +253,13 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
 
   private void associateBuilder() {
     try {
-      final String BUILDER_ID = "polyglot.ide.builder.jlBuilder";
+      String builderId = getBuilderId();
       IProjectDescription desc = project.getDescription();
       ICommand[] commands = desc.getBuildSpec();
       boolean found = false;
 
       for (ICommand command : commands) {
-        if (command.getBuilderName().equals(BUILDER_ID)) {
+        if (command.getBuilderName().equals(builderId)) {
           found = true;
           break;
         }
@@ -267,7 +267,7 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
       if (!found) {
         // add builder to project
         ICommand command = desc.newCommand();
-        command.setBuilderName(BUILDER_ID);
+        command.setBuilderName(builderId);
         ICommand[] newCommands = new ICommand[commands.length + 1];
 
         // Add it before other builders.
@@ -289,5 +289,9 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
           "polyglot.ide", "Error initializing project builder.", e.getCause(),
           Style.BLOCK);
     }
+  }
+
+  protected String getBuilderId() {
+    return "polyglot.ide.builder.jlBuilder";
   }
 }

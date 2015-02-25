@@ -39,9 +39,9 @@ import org.eclipse.swt.widgets.Display;
  * {@link AbstractEditor#AbstractEditor()}.
  */
 public class SourceViewerConfiguration extends
-org.eclipse.jface.text.source.SourceViewerConfiguration {
+    org.eclipse.jface.text.source.SourceViewerConfiguration {
 
-  private final Editor editor;
+  protected final Editor editor;
   private final ColorManager colorManager;
   private final CodeScanner scanner;
 
