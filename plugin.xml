@@ -68,4 +68,13 @@
     <context type="org.eclipse.ui.texteditor.ITextEditor"/>
   </target>
 </extension>
+
+<extension point="org.eclipse.debug.core.launchDelegates">
+  <launchDelegate
+   id="polyglot.ide.launchDelegate"
+   delegate="polyglot.ide.JLLaunchDelegate"
+   type="org.eclipse.jdt.launching.localJavaApplication"
+   modes="run">
+  </launchDelegate>
+ </extension>
 </plugin>

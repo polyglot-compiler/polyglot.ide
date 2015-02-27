@@ -65,16 +65,19 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     IProject project = editor.getFile().getProject();
     File classpathFile =
         project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
-            .toFile();
+        .toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
+    String sourcepath =
+        project.getFile("src").getRawLocation().toFile().toString();
 
     try {
       // TODO Need a better way of setting up these options.
       Options options = extInfo.getOptions();
       Options.global = options;
       options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null",
-          "-classpath", classpath }, new HashSet<String>());
+          "-classpath", classpath, "-sourcepath", sourcepath },
+          new HashSet<String>());
     } catch (UsageError e) {
       ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
           "An error occurred while configuring the compiler.", e, Style.LOG);
