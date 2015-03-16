@@ -25,7 +25,7 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
 
     File classpathFile =
         getProject().getFile(ClasspathUtil.CLASSPATH_FILE_NAME)
-            .getRawLocation().toFile();
+        .getRawLocation().toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
     ExtensionInfo extInfo = new JLExtensionInfo();
@@ -34,7 +34,7 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
     String binPath = getProject().getFile("bin").getRawLocation().toString();
     Set<String> filesToCompile = new HashSet<>();
     File src = getProject().getFile("src").getRawLocation().toFile();
-    collectAllFiles(src, filesToCompile);
+    collectAllFiles(src, filesToCompile, extInfo);
 
     if (filesToCompile.isEmpty()) return null;
 
@@ -43,7 +43,8 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
         0, compilerArgs, 0, 4);
     int curIdx = 4;
     for (String srcFile : filesToCompile) {
-      compilerArgs[curIdx++] = srcFile;
+      if (extension(srcFile).equals(extInfo.defaultFileExtension()))
+        compilerArgs[curIdx++] = srcFile;
     }
 
     Main main = new Main();
@@ -57,11 +58,24 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
     return null;
   }
 
-  private void collectAllFiles(File baseDir, Set<String> files) {
+  private void collectAllFiles(File baseDir, Set<String> files,
+      ExtensionInfo extInfo) {
     for (File file : baseDir.listFiles()) {
       if (file.isDirectory())
-        collectAllFiles(file, files);
-      else if (file.length() != 0) files.add(file.toString());
+        collectAllFiles(file, files, extInfo);
+      else if (extension(file.getName()).equals(extInfo.defaultFileExtension())
+          && file.length() != 0) files.add(file.toString());
     }
+  }
+
+  private String extension(String filename) {
+    String extension = "";
+
+    int i = filename.lastIndexOf('.');
+    if (i > 0) {
+      extension = filename.substring(i + 1);
+    }
+
+    return extension;
   }
 }
