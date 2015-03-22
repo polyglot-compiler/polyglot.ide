@@ -11,12 +11,21 @@
 	</extension>
 	<extension
 			point="org.eclipse.core.resources.natures"
-			id="jlnature"
-			name="JL nature">
+			id="polyglot.ide.jlnature"
+			name="JL Nature">
 		<runtime>
 			<run class="polyglot.ide.natures.JLNature"/>
 		</runtime>
 	</extension>
+	
+	<extension point="org.eclipse.ui.ide.projectNatureImages">
+	  <image 
+	    id="polyglot.ide.jlnatureImage"
+	    natureId="polyglot.ide.jlnature"
+	    icon="images/polyglot-logo.png">
+	  </image>
+	</extension>
+ 
 	<extension
 			point="org.eclipse.ui.newWizards">
 		<category
@@ -27,7 +36,8 @@
 				class="polyglot.ide.wizards.NewJLProjectWizard"
 				id="polyglot.ide.wizards.new.jlproject"
 				name="JL Project"
-				project="true"/>
+				project="true"
+				icon="images/polyglot-logo.png"/>
 	</extension>	
 	<extension
       id="polyglot.ide.builder.jlBuilder" name="JL Project Builder" point="org.eclipse.core.resources.builders">
