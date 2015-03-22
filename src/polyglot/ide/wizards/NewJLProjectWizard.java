@@ -43,6 +43,7 @@ import polyglot.ide.common.ClasspathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
+import polyglot.ide.natures.JLNature;
 
 public class NewJLProjectWizard extends Wizard implements INewWizard {
 
@@ -189,19 +190,19 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
     }
   }
 
+  protected String getNature() {
+    return JLNature.NATURE_ID;
+  }
+
   protected void addNature() {
     try {
-      final IProjectDescription description =
-          ResourcesPlugin.getWorkspace().newProjectDescription(
-              project.getName());
-      String[] natures = description.getNatureIds();
-      String[] newNatures = new String[natures.length + 1];
-      System.arraycopy(natures, 0, newNatures, 0, natures.length);
-      newNatures[natures.length] = "polyglot.ide.natures.jlnature";
-      description.setNatureIds(newNatures);
+      IProjectDescription description = project.getDescription();
+      description.setNatureIds(new String[] { getNature() });
       project.setDescription(description, null);
     } catch (CoreException e) {
-      // Something went wrong
+      ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
+          "Unable to associate nature with project: " + project.getName(),
+          "Internal error: " + e.getMessage(), e, Style.LOG, Style.BLOCK);
     }
   }
 
@@ -222,11 +223,11 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
           new SubProgressMonitor(new NullProgressMonitor(), 1));
     } catch (CoreException e) {
       ErrorUtil
-      .handleError(
-          ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
-          "polyglot.ide",
-          "Error initializing project structure. Please check file permissions",
-          e.getCause(), Style.BLOCK);
+          .handleError(
+              ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
+              "polyglot.ide",
+              "Error initializing project structure. Please check file permissions",
+              e.getCause(), Style.BLOCK);
     }
   }
 
