@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -28,6 +29,7 @@ import polyglot.ide.common.ClasspathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
+import polyglot.ide.natures.JLNature;
 import polyglot.main.Options;
 import polyglot.main.UsageError;
 import polyglot.util.SilentErrorQueue;
@@ -95,7 +97,8 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     // run.
 
     IProject project = editor.getFile().getProject();
-    if (project == null || !project.isAccessible()) return;
+    if (project == null || !project.isAccessible() || !checkNature(project))
+      return;
 
     ExtensionInfo extInfo = editor.extInfo();
     SilentErrorQueue eq = new SilentErrorQueue(100, "parser");
@@ -215,5 +218,16 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
       ErrorUtil.handleError(severity, "polyglot.ide",
           "Error updating problem markers", e.getMessage(), e, Style.SHOW);
     }
+  }
+
+  protected boolean checkNature(IProject project) {
+    try {
+      if (Arrays.asList(project.getDescription().getNatureIds()).contains(
+          JLNature.NATURE_ID)) return true;
+    } catch (CoreException e) {
+      e.printStackTrace();
+    }
+
+    return false;
   }
 }

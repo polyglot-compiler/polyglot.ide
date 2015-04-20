@@ -7,6 +7,7 @@
 				extensions="jl"
 				class="polyglot.ide.editors.JLEditor"
 				id="polyglot.ide.editors.Editor"
+				natureid="polyglot.ide.jlnature"
 		/>
 	</extension>
 	<extension
@@ -37,7 +38,7 @@
 				id="polyglot.ide.wizards.new.jlproject"
 				name="JL Project"
 				project="true"
-				icon="images/polyglot-logo.png"/>
+				icon="/images/polyglot-logo.png"/>
 	</extension>	
 	<extension
       id="polyglot.ide.builder.jlBuilder" name="JL Project Builder" point="org.eclipse.core.resources.builders">

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
@@ -127,7 +128,7 @@ public class SourceViewerConfiguration extends
 
     // Add our own strategies.
     if (DEFAULT_CONTENT_TYPE.equals(contentType)) {
-      strategies.add(new AutoEditStrategy());
+      strategies.add(new DefaultIndentLineAutoEditStrategy());
     }
 
     // Convert to array and return.
