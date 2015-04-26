@@ -8,9 +8,6 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class AbstractPlugin extends AbstractUIPlugin {
 
-  // The plug-in ID
-  public static final String PLUGIN_ID = "polyglot.ide"; //$NON-NLS-1$
-
   /**
    * Sets the shared instance to {@code this}.
    */
@@ -32,5 +29,4 @@ public abstract class AbstractPlugin extends AbstractUIPlugin {
     clearInstance();
     super.stop(context);
   }
-
 }

@@ -7,9 +7,9 @@
 				extensions="jl"
 				class="polyglot.ide.editors.JLEditor"
 				id="polyglot.ide.editors.Editor"
-				natureid="polyglot.ide.jlnature"
 		/>
 	</extension>
+	
 	<extension
 			point="org.eclipse.core.resources.natures"
 			id="polyglot.ide.jlnature"
@@ -17,6 +17,7 @@
 		<runtime>
 			<run class="polyglot.ide.natures.JLNature"/>
 		</runtime>
+		<builder id="polyglot.ide.jlBuilder" />
 	</extension>
 	
 	<extension point="org.eclipse.ui.ide.projectNatureImages">
@@ -40,9 +41,10 @@
 				project="true"
 				icon="/images/polyglot-logo.png"/>
 	</extension>	
+	
 	<extension
-      id="polyglot.ide.builder.jlBuilder" name="JL Project Builder" point="org.eclipse.core.resources.builders">
-      <builder>
+      id="jlBuilder" name="JL Project Builder" point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
          <run class="polyglot.ide.JLProjectBuilder">
          </run>
       </builder>
@@ -55,6 +57,15 @@
            		commandId="polyglot.ide.commands.configureBuildPathCommand"
            		label="Configure Build Path..."
            		style="push">
+           		
+           		<visibleWhen>
+					<iterate operator="and">
+					<test property="org.eclipse.core.resources.projectNature"
+					value="polyglot.ide.jlnature">
+					</test>
+					</iterate>
+				</visibleWhen> 
+           		
      		</command>
      		</menu>
   		</menuContribution>

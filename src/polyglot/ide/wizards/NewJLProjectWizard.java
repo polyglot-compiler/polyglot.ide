@@ -293,6 +293,6 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
   }
 
   protected String getBuilderId() {
-    return "polyglot.ide.builder.jlBuilder";
+    return "polyglot.ide.jlBuilder";
   }
 }

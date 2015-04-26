@@ -17,5 +17,4 @@ public class JLNature extends AbstractNature {
     // TODO Auto-generated method stub
 
   }
-
 }

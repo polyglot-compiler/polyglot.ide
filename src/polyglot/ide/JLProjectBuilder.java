@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.JLExtensionInfo;
 import polyglot.ide.common.ClasspathUtil;
-import polyglot.ide.natures.JLNature;
 import polyglot.main.Main;
 import polyglot.main.Main.TerminationException;
 import polyglot.util.SilentErrorQueue;
@@ -24,15 +23,12 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
   protected IProject[] build(int kind, Map<String, String> args,
       IProgressMonitor monitor) throws CoreException {
 
-    // check project nature and only compile JL Projects
-    if (getProject().getNature(JLNature.NATURE_ID) == null) return null;
-
     File classpathFile =
         getProject().getFile(ClasspathUtil.CLASSPATH_FILE_NAME)
-            .getRawLocation().toFile();
+        .getRawLocation().toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
-    ExtensionInfo extInfo = new JLExtensionInfo();
+    ExtensionInfo extInfo = getExtensionInfo();
     SilentErrorQueue eq = new SilentErrorQueue(100, "compiler");
 
     String binPath = getProject().getFile("bin").getRawLocation().toString();
@@ -62,7 +58,11 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
     return null;
   }
 
-  private void collectAllFiles(File baseDir, Set<String> files,
+  protected ExtensionInfo getExtensionInfo() {
+    return new JLExtensionInfo();
+  }
+
+  protected void collectAllFiles(File baseDir, Set<String> files,
       ExtensionInfo extInfo) {
     for (File file : baseDir.listFiles()) {
       if (file.isDirectory())
@@ -72,7 +72,7 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
     }
   }
 
-  private String extension(String filename) {
+  protected String extension(String filename) {
     String extension = "";
 
     int i = filename.lastIndexOf('.');
