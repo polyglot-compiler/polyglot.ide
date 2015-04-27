@@ -9,12 +9,13 @@ import polyglot.ide.editors.Editor;
 import polyglot.ide.editors.ReconcilingStrategy;
 import polyglot.jl5.ide.JL5Nature;
 
-public class JL5ReconciliationStrategy extends ReconcilingStrategy {
+public class JL5ReconcilingStrategy extends ReconcilingStrategy {
 
-	public JL5ReconciliationStrategy(Editor editor) {
+	public JL5ReconcilingStrategy(Editor editor) {
 		super(editor);
 	}
-
+	
+	@Override
 	protected boolean checkNature(IProject project) {
 		try {
 			if (Arrays.asList(project.getDescription().getNatureIds())
