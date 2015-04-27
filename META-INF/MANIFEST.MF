@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Polyglot JL5 IDE
+Bundle-SymbolicName: polyglot.jl5.ide;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: classes/,
+ lib/java_cup.jar,
+ lib/jflex.jar,
+ lib/polyglot-ide.jar,
+ lib/polyglot.jar
+Bundle-Activator: polyglot.jl5.ide.JL5Plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.launching;bundle-version="3.7.101",
+ org.eclipse.debug.core;bundle-version="3.9.0",
+ org.eclipse.jdt.debug;bundle-version="3.8.101"
