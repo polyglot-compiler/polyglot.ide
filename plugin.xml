@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.ui.editors">
+		<editor
+				name="Polyglot JL7 Editor"
+				extensions="jl7"
+				class="polyglot.jl7.ide.editors.JL7Editor"
+				id="polyglot.jl7.ide.editors.Editor"
+		/>
+	</extension>
+	
+	<extension
+			point="org.eclipse.core.resources.natures"
+			id="polyglot.jl7.ide.jl7nature"
+			name="JL7 Nature">
+		<runtime>
+			<run class="polyglot.jl7.ide.JL7Nature"/>
+		</runtime>
+		<builder id="polyglot.jl7.ide.jl7Builder" />
+	</extension>
+	
+	<extension
+			point="org.eclipse.ui.newWizards">
+		<category
+				id="polyglot.ide.category.wizards"
+				name="JL7"/>
+		<wizard
+				category="polyglot.ide.category.wizards"
+				class="polyglot.jl7.ide.wizards.NewJL7ProjectWizard"
+				id="polyglot.jl7.ide.wizards.new.jl7project"
+				name="JL7 Project"
+				project="true"
+				icon="/images/polyglot-logo.png"/>
+	</extension>	
+	
+	<extension
+      id="jl7Builder" name="JL7 Project Builder" point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="polyglot.jl7.ide.JL7ProjectBuilder">
+         </run>
+      </builder>
+   </extension>
+   
+  	<extension point="org.eclipse.ui.menus">
+  		<menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=export">
+     		<menu id="buildPathMenu" label="Build Path">
+     		<command
+           		commandId="polyglot.ide.commands.configureBuildPathCommand"
+           		label="Configure Build Path..."
+           		style="push">
+           		
+           		<visibleWhen>
+					<iterate operator="and">
+					<test property="org.eclipse.core.resources.projectNature"
+					value="polyglot.jl7.ide.jl7nature">
+					</test>
+					</iterate>
+				</visibleWhen> 
+           		
+     		</command>
+     		</menu>
+  		</menuContribution>
+	</extension>
+	
+</plugin>
