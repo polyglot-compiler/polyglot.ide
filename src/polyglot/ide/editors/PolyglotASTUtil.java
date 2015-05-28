@@ -27,7 +27,6 @@ import polyglot.ast.Stmt;
 import polyglot.ast.TopLevelDecl;
 import polyglot.ast.TypeNode;
 import polyglot.ext.jl5.ast.EnumConstantDecl;
-import polyglot.ide.JLProjectBuilder;
 import polyglot.types.ConstructorInstance;
 import polyglot.types.FieldInstance;
 import polyglot.types.LocalInstance;
@@ -49,7 +48,7 @@ public class PolyglotASTUtil {
     }
 
     SourceFile outputAST =
-        JLProjectBuilder.getAST(editor.getFile().getLocation().toString());
+        ReconcilingStrategy.getAST(editor.getFile().getLocation().toString());
 
     if (outputAST == null) return null;
 
@@ -103,7 +102,7 @@ public class PolyglotASTUtil {
   }
 
   public static String getJavadoc(Position pos) {
-    SourceFile outputAST = JLProjectBuilder.getAST(pos.file());
+    SourceFile outputAST = ReconcilingStrategy.getAST(pos.path());
 
     if (outputAST == null) return null;
 

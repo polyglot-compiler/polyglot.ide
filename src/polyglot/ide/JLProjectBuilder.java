@@ -1,7 +1,6 @@
 package polyglot.ide;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -11,17 +10,14 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import polyglot.ast.SourceFile;
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.JLExtensionInfo;
-import polyglot.frontend.Job;
 import polyglot.ide.common.ClasspathUtil;
 import polyglot.main.Main;
 import polyglot.main.Main.TerminationException;
 import polyglot.util.SilentErrorQueue;
 
 public class JLProjectBuilder extends IncrementalProjectBuilder {
-  private static Map<String, SourceFile> outputMap = new HashMap<>();
 
   @Override
   protected IProject[] build(int kind, Map<String, String> args,
@@ -29,7 +25,7 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
 
     File classpathFile =
         getProject().getFile(ClasspathUtil.CLASSPATH_FILE_NAME)
-            .getRawLocation().toFile();
+        .getRawLocation().toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
     ExtensionInfo extInfo = getExtensionInfo();
@@ -59,13 +55,6 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
       // ignore this one
     }
 
-    if (main.jobs() != null) {
-      for (Job job : main.jobs()) {
-        SourceFile sourceFile = (SourceFile) job.ast();
-        outputMap.put(sourceFile.position().file(), sourceFile);
-      }
-    }
-
     return null;
   }
 
@@ -92,9 +81,5 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
     }
 
     return extension;
-  }
-
-  public static SourceFile getAST(String filename) {
-    return outputMap.get(filename);
   }
 }

@@ -11,7 +11,10 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -22,8 +25,10 @@ import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.source.ISourceViewer;
 
+import polyglot.ast.SourceFile;
 import polyglot.frontend.Compiler;
 import polyglot.frontend.ExtensionInfo;
+import polyglot.frontend.Job;
 import polyglot.frontend.Source;
 import polyglot.ide.common.ClasspathUtil;
 import polyglot.ide.common.ErrorUtil;
@@ -42,6 +47,8 @@ import polyglot.util.SilentErrorQueue;
 public class ReconcilingStrategy implements IReconcilingStrategy {
   protected final Editor editor;
   protected IDocument document;
+
+  private static Map<String, SourceFile> outputMap = new HashMap<>();
 
   public ReconcilingStrategy(Editor editor) {
     this.editor = editor;
@@ -67,7 +74,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     IProject project = editor.getFile().getProject();
     File classpathFile =
         project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
-        .toFile();
+            .toFile();
 
     String classpath = ClasspathUtil.parse(classpathFile);
     String sourcepath =
@@ -196,6 +203,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     boolean success;
     try {
       success = compiler.validate(Collections.singleton(source));
+      if (success) addToOutputMap(compiler.jobs());
     } catch (Throwable t) {
       ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
           "An internal compiler error occurred.", t, Style.LOG, Style.SHOW);
@@ -229,5 +237,19 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     }
 
     return false;
+  }
+
+  protected void addToOutputMap(List<Job> jobs) {
+    if (jobs != null) {
+      for (Job job : jobs) {
+        SourceFile sourceFile = (SourceFile) job.ast();
+        if (sourceFile != null)
+          outputMap.put(sourceFile.position().path(), sourceFile);
+      }
+    }
+  }
+
+  public static SourceFile getAST(String filename) {
+    return outputMap.get(filename);
   }
 }
