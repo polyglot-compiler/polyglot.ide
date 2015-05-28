@@ -92,13 +92,4 @@
   </launchDelegate>
  </extension>
 
-
-<extension point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors"
-      id="polyglot.ide.hyperlinkDetector"
-      name="JL Hyperlink Detector"
-      targetId="org.eclipse.ui.DefaultTextEditor"
-      class="polyglot.ide.editors.JLHyperlinkDetector"
-      activate="true"
-      >
-</extension>
 </plugin>

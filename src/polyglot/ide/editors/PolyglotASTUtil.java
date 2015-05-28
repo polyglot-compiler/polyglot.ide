@@ -14,15 +14,19 @@ import polyglot.ast.Call;
 import polyglot.ast.ConstructorCall;
 import polyglot.ast.Documentable;
 import polyglot.ast.Field;
+import polyglot.ast.FieldDecl;
 import polyglot.ast.Javadoc;
 import polyglot.ast.Lang;
 import polyglot.ast.Local;
 import polyglot.ast.New;
 import polyglot.ast.Node;
+import polyglot.ast.ProcedureDecl;
 import polyglot.ast.SourceFile;
 import polyglot.ast.Special;
 import polyglot.ast.Stmt;
+import polyglot.ast.TopLevelDecl;
 import polyglot.ast.TypeNode;
+import polyglot.ext.jl5.ast.EnumConstantDecl;
 import polyglot.ide.JLProjectBuilder;
 import polyglot.types.ConstructorInstance;
 import polyglot.types.FieldInstance;
@@ -38,7 +42,7 @@ public class PolyglotASTUtil {
     try {
       editor =
           (JLEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-              .getActivePage().getActiveEditor();
+          .getActivePage().getActiveEditor();
     } catch (Exception e) {
       e.printStackTrace();
       return null;
@@ -164,6 +168,17 @@ public class PolyglotASTUtil {
           Special special = (Special) n;
           name = special.kind().toString();
           pos = special.type().position();
+        } else if (n instanceof Documentable) {
+          pos = n.position();
+
+          if (n instanceof TopLevelDecl)
+            name = ((TopLevelDecl) n).name();
+          else if (n instanceof FieldDecl)
+            name = ((FieldDecl) n).name();
+          else if (n instanceof ProcedureDecl)
+            name = ((ProcedureDecl) n).name();
+          else if (n instanceof EnumConstantDecl)
+            name = ((EnumConstantDecl) n).name().id();
         }
       }
 
