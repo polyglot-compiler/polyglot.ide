@@ -14,19 +14,15 @@ import polyglot.ast.Call;
 import polyglot.ast.ConstructorCall;
 import polyglot.ast.Documentable;
 import polyglot.ast.Field;
-import polyglot.ast.FieldDecl;
 import polyglot.ast.Javadoc;
 import polyglot.ast.Lang;
 import polyglot.ast.Local;
 import polyglot.ast.New;
 import polyglot.ast.Node;
-import polyglot.ast.ProcedureDecl;
 import polyglot.ast.SourceFile;
 import polyglot.ast.Special;
 import polyglot.ast.Stmt;
-import polyglot.ast.TopLevelDecl;
 import polyglot.ast.TypeNode;
-import polyglot.ext.jl5.ast.EnumConstantDecl;
 import polyglot.types.ConstructorInstance;
 import polyglot.types.FieldInstance;
 import polyglot.types.LocalInstance;
@@ -169,15 +165,7 @@ public class PolyglotASTUtil {
           pos = special.type().position();
         } else if (n instanceof Documentable) {
           pos = n.position();
-
-          if (n instanceof TopLevelDecl)
-            name = ((TopLevelDecl) n).name();
-          else if (n instanceof FieldDecl)
-            name = ((FieldDecl) n).name();
-          else if (n instanceof ProcedureDecl)
-            name = ((ProcedureDecl) n).name();
-          else if (n instanceof EnumConstantDecl)
-            name = ((EnumConstantDecl) n).name().id();
+          name = ((Documentable) n).id().id();
         }
       }
 
