@@ -11,19 +11,17 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * {@link SourceViewerConfiguration#getTextHover(ISourceViewer, String)}.
  */
 public class TextHover implements ITextHover {
+  JLHyperlink hyperlink;
 
   @Override
   public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
-    // TODO Auto-generated method stub
-    int XXX;
-    return null;
+    return (hyperlink != null) ? PolyglotASTUtil.getJavadoc(hyperlink
+        .getPosition()) : null;
   }
 
   @Override
   public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
-    // TODO Auto-generated method stub
-    int XXX;
-    return null;
+    hyperlink = PolyglotASTUtil.getHyperlink(textViewer, offset);
+    return hyperlink != null ? hyperlink.getHyperlinkRegion() : null;
   }
-
 }

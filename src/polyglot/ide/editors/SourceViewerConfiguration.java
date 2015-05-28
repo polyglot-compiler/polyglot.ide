@@ -3,9 +3,11 @@ package polyglot.ide.editors;
 import static org.eclipse.jface.text.IDocument.DEFAULT_CONTENT_TYPE;
 import static polyglot.ide.editors.ColorManager.COMMENT_COLOR;
 import static polyglot.ide.editors.ColorManager.DEFAULT_COLOR;
+import static polyglot.ide.editors.ColorManager.JAVADOC_COLOR;
 import static polyglot.ide.editors.ColorManager.STRING_COLOR;
 import static polyglot.ide.editors.PartitionScanner.BLOCK_COMMENT;
 import static polyglot.ide.editors.PartitionScanner.CHAR_LITERAL;
+import static polyglot.ide.editors.PartitionScanner.JAVADOC_COMMENT;
 import static polyglot.ide.editors.PartitionScanner.LINE_COMMENT;
 import static polyglot.ide.editors.PartitionScanner.STRING_LITERAL;
 
@@ -40,7 +42,7 @@ import org.eclipse.swt.widgets.Display;
  * {@link AbstractEditor#AbstractEditor()}.
  */
 public class SourceViewerConfiguration extends
-    org.eclipse.jface.text.source.SourceViewerConfiguration {
+org.eclipse.jface.text.source.SourceViewerConfiguration {
 
   protected final Editor editor;
   private final ColorManager colorManager;
@@ -78,6 +80,12 @@ public class SourceViewerConfiguration extends
         new DefaultDamagerRepairer(scanner);
     reconciler.setDamager(defaultRepairer, DEFAULT_CONTENT_TYPE);
     reconciler.setRepairer(defaultRepairer, DEFAULT_CONTENT_TYPE);
+
+    NonRuleBasedDamagerRepairer javadocCommentRepairer =
+        new NonRuleBasedDamagerRepairer(new TextAttribute(
+            colorManager.getColor(JAVADOC_COLOR)));
+    reconciler.setDamager(javadocCommentRepairer, JAVADOC_COMMENT);
+    reconciler.setRepairer(javadocCommentRepairer, JAVADOC_COMMENT);
 
     // Use the non-rule-based repairer for BLOCK_COMMENT partitions.
     NonRuleBasedDamagerRepairer blockCommentRepairer =

@@ -1,5 +1,8 @@
 package polyglot.ide;
 
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -22,6 +25,13 @@ public abstract class AbstractPlugin extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     setInstance();
+
+    try {
+      ResourcesPlugin.getWorkspace().build(
+          IncrementalProjectBuilder.FULL_BUILD, null);
+    } catch (CoreException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

@@ -15,20 +15,22 @@ public class ColorManager {
   public static final RGB KEYWORD_COLOR = new RGB(127, 0, 85);
   public static final RGB STRING_COLOR = new RGB(42, 0, 255);
   public static final RGB DEFAULT_COLOR = new RGB(0, 0, 0);
-  
+  public static final RGB JAVADOC_COLOR = new RGB(63, 95, 191);
+
   protected Map<RGB, Color> colorTable = new HashMap<>(10);
-  
+
   public void dispose() {
-    for (Color c : colorTable.values()) c.dispose();
+    for (Color c : colorTable.values())
+      c.dispose();
   }
-  
+
   public Color getColor(RGB rgb) {
     Color color = colorTable.get(rgb);
     if (color == null) {
       color = new Color(Display.getCurrent(), rgb);
       colorTable.put(rgb, color);
     }
-    
+
     return color;
   }
 }

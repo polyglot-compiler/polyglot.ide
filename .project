@@ -3,6 +3,7 @@
 	<name>polyglot.ide</name>
 	<comment></comment>
 	<projects>
+		<project>polyglot</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
