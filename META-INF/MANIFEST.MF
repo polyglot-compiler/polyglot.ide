@@ -22,6 +22,6 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: classes,
- lib/polyglot.jar,
+ lib/polyglot/,
  lib/java_cup.jar,
  lib/jflex.jar
