@@ -19,19 +19,29 @@ import polyglot.ide.common.BuildpathUtil;
 
 public class JLLaunchDelegate implements ILaunchConfigurationDelegate {
 
+  protected final PluginInfo pluginInfo;
+
+  public JLLaunchDelegate() {
+    this(JLPluginInfo.INSTANCE);
+  }
+
+  protected JLLaunchDelegate(PluginInfo pluginInfo) {
+    this.pluginInfo = pluginInfo;
+  }
+
   @Override
   public void launch(ILaunchConfiguration configuration, String mode,
       ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
     String projectName =
         configuration
-        .getAttribute("org.eclipse.jdt.launching.PROJECT_ATTR", "");
+            .getAttribute("org.eclipse.jdt.launching.PROJECT_ATTR", "");
     IProject project =
         ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
     File classpathFile =
         project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
-        .toFile();
-    String classpath = BuildpathUtil.parse(classpathFile, "");
+            .toFile();
+    String classpath = BuildpathUtil.parse(pluginInfo, classpathFile, "");
 
     String classToLaunch =
         configuration.getAttribute("org.eclipse.jdt.launching.MAIN_TYPE", "");

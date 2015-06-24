@@ -52,7 +52,7 @@ org.eclipse.jface.text.source.SourceViewerConfiguration {
     this.editor = editor;
     this.colorManager = colorManager;
 
-    scanner = new CodeScanner(editor.extInfo().keywords(), colorManager);
+    scanner = new CodeScanner(editor.makeExtInfo().keywords(), colorManager);
     scanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager
         .getColor(DEFAULT_COLOR))));
   }

@@ -11,6 +11,8 @@ import org.eclipse.ui.statushandlers.IStatusAdapterConstants;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import polyglot.ide.PluginInfo;
+
 /**
  * Utility class for handling warning and error statuses by logging and/or
  * displaying to the user.
@@ -57,7 +59,7 @@ public class ErrorUtil {
 
   /**
    * Converts an IStatus severity number to a Level.
-   * 
+   *
    * @param defaultLevel
    *          the default level to return in case the given {@code severity}
    *          number is undefined.
@@ -118,11 +120,11 @@ public class ErrorUtil {
 
   /**
    * Handles an error by logging it and/or displaying it to the user.
-   * 
+   *
+   * @param pluginInfo
+   *          the plug-in from which the error originated.
    * @param severity
    *          the severity of the error.
-   * @param pluginId
-   *          the id of the plug-in from which the error originated.
    * @param title
    *          the title of any dialog that will be shown to the user.
    * @param message
@@ -132,8 +134,8 @@ public class ErrorUtil {
    * @param styles
    *          the styles by which the error should be handled.
    */
-  public static void handleError(Level severity, String pluginId, String title,
-      String message, Throwable exception, Style... styles) {
+  public static void handleError(PluginInfo pluginInfo, Level severity,
+      String title, String message, Throwable exception, Style... styles) {
     // If the message is empty, derive one from the exception.
     if ((message == null || message.trim().length() == 0) && exception != null) {
       message = exception.getMessage();
@@ -143,7 +145,8 @@ public class ErrorUtil {
     }
 
     Status status =
-        new Status(severity.severity, pluginId, message, getCause(exception));
+        new Status(severity.severity, pluginInfo.pluginID(), message,
+            getCause(exception));
     StatusAdapter statusAdapter = new StatusAdapter(status);
     statusAdapter.setProperty(IStatusAdapterConstants.TITLE_PROPERTY, title);
 
@@ -155,11 +158,11 @@ public class ErrorUtil {
 
   /**
    * Handles an error by logging it and/or displaying it to the user.
-   * 
+   *
+   * @param pluginInfo
+   *          the plug-in from which the error originated.
    * @param severity
    *          the severity of the error.
-   * @param pluginId
-   *          the id of the plug-in from which the error originated.
    * @param title
    *          the title of any dialog that will be shown to the user.
    * @param exception
@@ -167,9 +170,9 @@ public class ErrorUtil {
    * @param styles
    *          the styles by which the error should be handled.
    */
-  public static void handleError(Level severity, String pluginId, String title,
-      Throwable exception, Style... styles) {
-    handleError(severity, pluginId, title, null, exception, styles);
+  public static void handleError(PluginInfo pluginInfo, Level severity,
+      String title, Throwable exception, Style... styles) {
+    handleError(pluginInfo, severity, title, null, exception, styles);
   }
 
   /**
@@ -183,7 +186,7 @@ public class ErrorUtil {
       Throwable result = exception.getCause();
       if (result != null) return result;
     }
-    
+
     return exception;
   }
 }

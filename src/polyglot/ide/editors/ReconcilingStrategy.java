@@ -30,11 +30,11 @@ import polyglot.frontend.Compiler;
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.Job;
 import polyglot.frontend.Source;
+import polyglot.ide.PluginInfo;
 import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
-import polyglot.ide.natures.JLNature;
 import polyglot.main.Options;
 import polyglot.main.UsageError;
 import polyglot.util.SilentErrorQueue;
@@ -45,12 +45,14 @@ import polyglot.util.SilentErrorQueue;
  * {@link SourceViewerConfiguration#getReconciler(ISourceViewer)}.
  */
 public class ReconcilingStrategy implements IReconcilingStrategy {
+  protected final PluginInfo pluginInfo;
   protected final Editor editor;
   protected IDocument document;
 
   private static Map<String, SourceFile> outputMap = new HashMap<>();
 
   public ReconcilingStrategy(Editor editor) {
+    this.pluginInfo = editor.pluginInfo();
     this.editor = editor;
   }
 
@@ -76,7 +78,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
         project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
             .toFile();
 
-    String classpath = BuildpathUtil.parse(classpathFile, "");
+    String classpath = BuildpathUtil.parse(pluginInfo, classpathFile, "");
     String sourcepath =
         project.getFile("src").getRawLocation().toFile().toString();
 
@@ -88,7 +90,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
           "-classpath", classpath, "-sourcepath", sourcepath },
           new HashSet<String>());
     } catch (UsageError e) {
-      ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
+      ErrorUtil.handleError(pluginInfo, Level.ERROR, "Compiler error",
           "An error occurred while configuring the compiler.", e, Style.LOG);
     }
   }
@@ -107,7 +109,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     if (project == null || !project.isAccessible() || !checkNature(project))
       return;
 
-    ExtensionInfo extInfo = editor.extInfo();
+    ExtensionInfo extInfo = editor.makeExtInfo();
     SilentErrorQueue eq = new SilentErrorQueue(100, "parser");
     setupCompilerOptions(extInfo);
     Compiler compiler = new Compiler(extInfo, eq);
@@ -205,7 +207,7 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
       success = compiler.validate(Collections.singleton(source));
       if (success) addToOutputMap(compiler.jobs());
     } catch (Throwable t) {
-      ErrorUtil.handleError(Level.ERROR, "polyglot.ide", "Compiler error",
+      ErrorUtil.handleError(pluginInfo, Level.ERROR, "Compiler error",
           "An internal compiler error occurred.", t, Style.LOG, Style.SHOW);
       return;
     }
@@ -223,20 +225,19 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
                 Level.ERROR);
       }
 
-      ErrorUtil.handleError(severity, "polyglot.ide",
+      ErrorUtil.handleError(pluginInfo, severity,
           "Error updating problem markers", e.getMessage(), e, Style.SHOW);
     }
   }
 
   protected boolean checkNature(IProject project) {
     try {
-      if (Arrays.asList(project.getDescription().getNatureIds()).contains(
-          JLNature.NATURE_ID)) return true;
+      return Arrays.asList(project.getDescription().getNatureIds()).contains(
+          pluginInfo.natureID());
     } catch (CoreException e) {
       e.printStackTrace();
+      return false;
     }
-
-    return false;
   }
 
   protected void addToOutputMap(List<Job> jobs) {

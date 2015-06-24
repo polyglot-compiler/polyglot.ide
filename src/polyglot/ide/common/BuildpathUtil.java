@@ -17,6 +17,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import polyglot.ide.PluginInfo;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
 
@@ -76,10 +77,10 @@ public class BuildpathUtil {
    *          the value to return if the given build path is not found in the
    *          given file
    */
-  public static String parse(File dotBuildpath,
+  public static String parse(PluginInfo pluginInfo, File dotBuildpath,
       BuildpathEntry.Kind buildpathKind, String defaultVal) {
     BuildpathContentHandler contentHandler =
-        getContentHandler(dotBuildpath, buildpathKind);
+        getContentHandler(pluginInfo, dotBuildpath, buildpathKind);
     if (contentHandler != null)
       return contentHandler.getBuildpathString();
     else return defaultVal;
@@ -95,8 +96,9 @@ public class BuildpathUtil {
    *          the value to return if the given entry is not found in the given
    *          file
    */
-  public static String parse(File dotBuildpath, String defaultVal) {
-    return parse(dotBuildpath, BuildpathEntry.CLASSPATH, defaultVal);
+  public static String parse(PluginInfo pluginInfo, File dotBuildpath,
+      String defaultVal) {
+    return parse(pluginInfo, dotBuildpath, BuildpathEntry.CLASSPATH, defaultVal);
   }
 
   /**
@@ -106,8 +108,10 @@ public class BuildpathUtil {
    * @param dotBuildpath
    *          the file to parse
    */
-  public static List<BuildpathEntry> getClasspathEntries(File dotBuildpath) {
-    return getBuildpathEntries(dotBuildpath, BuildpathEntry.CLASSPATH);
+  public static List<BuildpathEntry> getClasspathEntries(PluginInfo pluginInfo,
+      File dotBuildpath) {
+    return getBuildpathEntries(pluginInfo, dotBuildpath,
+        BuildpathEntry.CLASSPATH);
   }
 
   /**
@@ -118,16 +122,17 @@ public class BuildpathUtil {
    * @param buildpathKind
    *          the kind of build path to read
    */
-  public static List<BuildpathEntry> getBuildpathEntries(File dotBuildpath,
-      BuildpathEntry.Kind buildpathKind) {
+  public static List<BuildpathEntry> getBuildpathEntries(PluginInfo pluginInfo,
+      File dotBuildpath, BuildpathEntry.Kind buildpathKind) {
     BuildpathContentHandler contentHandler =
-        getContentHandler(dotBuildpath, buildpathKind);
+        getContentHandler(pluginInfo, dotBuildpath, buildpathKind);
     if (contentHandler != null)
       return contentHandler.getBuildpathEntries();
     else return new ArrayList<>();
   }
 
-  private static BuildpathContentHandler getContentHandler(File dotBuildpath,
+  private static BuildpathContentHandler getContentHandler(
+      PluginInfo pluginInfo, File dotBuildpath,
       BuildpathEntry.Kind buildpathKind) {
     try {
       SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -139,7 +144,7 @@ public class BuildpathUtil {
       parser.parse(dotBuildpath.toString());
       return buildpathContentHandler;
     } catch (Exception e) {
-      ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
+      ErrorUtil.handleError(pluginInfo, Level.WARNING,
           "Error parsing dot-buildpath file", e.getCause(), Style.BLOCK);
       return null;
     }

@@ -14,19 +14,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import polyglot.ide.PluginInfo;
 import polyglot.ide.common.BuildpathEntry;
 import polyglot.ide.common.BuildpathUtil;
 
 public class NewJLProjectWizardPageTwo extends NewElementWizardPage {
+  protected final PluginInfo pluginInfo;
   protected LibrarySelector classpathSelector;
   protected IProject project;
 
-  public NewJLProjectWizardPageTwo(String name) {
-    super(name);
+  public NewJLProjectWizardPageTwo(PluginInfo pluginInfo, String name) {
+    this(pluginInfo, name, null);
   }
 
-  public NewJLProjectWizardPageTwo(String name, IProject project) {
-    this(name);
+  public NewJLProjectWizardPageTwo(PluginInfo pluginInfo, String name,
+      IProject project) {
+    super(name);
+    this.pluginInfo = pluginInfo;
     this.project = project;
   }
 
@@ -59,9 +63,9 @@ public class NewJLProjectWizardPageTwo extends NewElementWizardPage {
   protected List<LibraryResource> extractClasspathEntries() {
     File classpathFile =
         project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
-        .toFile();
+            .toFile();
     List<BuildpathEntry> entries =
-        BuildpathUtil.getClasspathEntries(classpathFile);
+        BuildpathUtil.getClasspathEntries(pluginInfo, classpathFile);
     List<LibraryResource> items = new ArrayList<>();
 
     for (BuildpathEntry entry : entries)

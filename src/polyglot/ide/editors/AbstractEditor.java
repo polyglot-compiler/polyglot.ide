@@ -10,6 +10,8 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 
+import polyglot.frontend.ExtensionInfo;
+import polyglot.ide.PluginInfo;
 import polyglot.util.ErrorInfo;
 import polyglot.util.SilentErrorQueue;
 
@@ -19,15 +21,28 @@ import polyglot.util.SilentErrorQueue;
  */
 public abstract class AbstractEditor extends TextEditor implements Editor {
 
+  protected final PluginInfo pluginInfo;
   protected ColorManager colorManager;
 
-  public AbstractEditor() {
+  protected AbstractEditor(PluginInfo pluginInfo) {
+    this.pluginInfo = pluginInfo;
+
     // Hook in the document provider.
     setDocumentProvider(new DocumentProvider());
 
     // Hook in the source viewer configuration.
     colorManager = new ColorManager();
     setSourceViewerConfiguration(createSourceViewerConfiguration());
+  }
+
+  @Override
+  public final PluginInfo pluginInfo() {
+    return pluginInfo;
+  }
+
+  @Override
+  public final ExtensionInfo makeExtInfo() {
+    return pluginInfo.makeExtInfo();
   }
 
   protected SourceViewerConfiguration createSourceViewerConfiguration() {
@@ -73,17 +88,17 @@ public abstract class AbstractEditor extends TextEditor implements Editor {
 
   @Override
   public void addProblemMarker(ErrorInfo error) throws CoreException,
-  BadLocationException {
+      BadLocationException {
     addProblemMarker(
         error.getMessage(),
         PolyglotUtil.convert(getSourceViewer().getDocument(),
             error.getPosition()),
-            PolyglotUtil.convertErrorKind(error.getErrorKind()));
+        PolyglotUtil.convertErrorKind(error.getErrorKind()));
   }
 
   @Override
   public void addProblemMarkers(SilentErrorQueue eq) throws CoreException,
-  BadLocationException {
+      BadLocationException {
     for (ErrorInfo error : eq) {
       addProblemMarker(error);
     }
@@ -91,7 +106,7 @@ public abstract class AbstractEditor extends TextEditor implements Editor {
 
   @Override
   public void setProblemMarkers(SilentErrorQueue eq) throws CoreException,
-  BadLocationException {
+      BadLocationException {
     clearProblemMarkers();
     addProblemMarkers(eq);
   }

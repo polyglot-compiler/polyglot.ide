@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.wizard.Wizard;
 
+import polyglot.ide.PluginInfo;
 import polyglot.ide.common.BuildpathEntry;
 import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
@@ -17,19 +18,23 @@ import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
 
 public class JLConfigureBuildPathWizard extends Wizard {
-  IProject project;
-  NewJLProjectWizardPageTwo buildConfigurationPage;
+  protected final PluginInfo pluginInfo;
+  protected IProject project;
+  protected NewJLProjectWizardPageTwo buildConfigurationPage;
 
-  JLConfigureBuildPathWizard(IProject project) {
+  JLConfigureBuildPathWizard(PluginInfo pluginInfo, IProject project) {
+    this.pluginInfo = pluginInfo;
     this.project = project;
   }
 
   @Override
   public void addPages() {
     buildConfigurationPage =
-        new NewJLProjectWizardPageTwo("buildConfigWizardPage", project);
-    buildConfigurationPage.setTitle("JL Settings");
-    buildConfigurationPage.setDescription("Define the JL build settings.");
+        new NewJLProjectWizardPageTwo(pluginInfo, "buildConfigWizardPage",
+            project);
+    buildConfigurationPage.setTitle(pluginInfo.langName() + " Settings");
+    buildConfigurationPage.setDescription("Define the " + pluginInfo.langName()
+        + " build settings.");
     addPage(buildConfigurationPage);
   }
 
@@ -64,8 +69,8 @@ public class JLConfigureBuildPathWizard extends Wizard {
       BuildpathUtil.createBuildpathFile(project, classpathEntries);
       return true;
     } catch (Exception e) {
-      ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
-          "Error updating dot-classpath file. Please check file permissions",
+      ErrorUtil.handleError(pluginInfo, Level.WARNING,
+          "Error updating .buildpath file. Please check file permissions",
           e.getCause(), Style.BLOCK);
       return false;
     }

@@ -11,7 +11,16 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-public class ConfigureBuildPathCommandHandler extends AbstractHandler {
+import polyglot.ide.PluginInfo;
+
+public abstract class AbstractConfigureBuildpathCommandHandler extends
+    AbstractHandler {
+
+  protected final PluginInfo pluginInfo;
+
+  protected AbstractConfigureBuildpathCommandHandler(PluginInfo pluginInfo) {
+    this.pluginInfo = pluginInfo;
+  }
 
   @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -31,7 +40,6 @@ public class ConfigureBuildPathCommandHandler extends AbstractHandler {
     return null;
   }
 
-  protected Wizard getWizard(IProject project) {
-    return new JLConfigureBuildPathWizard(project);
-  }
+  protected abstract Wizard getWizard(IProject project);
+
 }
