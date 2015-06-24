@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.JLExtensionInfo;
-import polyglot.ide.common.ClasspathUtil;
+import polyglot.ide.common.BuildpathUtil;
 import polyglot.main.Main;
 import polyglot.main.Main.TerminationException;
 import polyglot.util.SilentErrorQueue;
@@ -24,10 +24,10 @@ public class JLProjectBuilder extends IncrementalProjectBuilder {
       IProgressMonitor monitor) throws CoreException {
 
     File classpathFile =
-        getProject().getFile(ClasspathUtil.CLASSPATH_FILE_NAME)
+        getProject().getFile(BuildpathUtil.BUILDPATH_FILE_NAME)
         .getRawLocation().toFile();
 
-    String classpath = ClasspathUtil.parse(classpathFile);
+    String classpath = BuildpathUtil.parse(classpathFile, "");
     ExtensionInfo extInfo = getExtensionInfo();
     SilentErrorQueue eq = new SilentErrorQueue(100, "compiler");
 

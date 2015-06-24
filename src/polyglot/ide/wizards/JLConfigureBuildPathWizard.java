@@ -10,9 +10,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.wizard.Wizard;
 
-import polyglot.ide.common.ClasspathEntry;
-import polyglot.ide.common.ClasspathEntry.ClasspathEntryKind;
-import polyglot.ide.common.ClasspathUtil;
+import polyglot.ide.common.BuildpathEntry;
+import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -49,20 +48,20 @@ public class JLConfigureBuildPathWizard extends Wizard {
   }
 
   private boolean updateClasspathFile() {
-    List<ClasspathEntry> classpathEntries = new ArrayList<>();
-    classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.SRC, "src"));
+    List<BuildpathEntry> classpathEntries = new ArrayList<>();
+    classpathEntries.add(new BuildpathEntry(BuildpathEntry.SRC, "src"));
 
     List<LibraryResource> libraryResourceList =
         buildConfigurationPage.getClasspathEntries();
     if (libraryResourceList != null)
       for (LibraryResource libraryResource : libraryResourceList)
-        classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.LIB,
+        classpathEntries.add(new BuildpathEntry(BuildpathEntry.LIB,
             libraryResource.getName()));
 
-    classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.OUTPUT, "bin"));
+    classpathEntries.add(new BuildpathEntry(BuildpathEntry.OUTPUT, "bin"));
 
     try {
-      ClasspathUtil.createClasspathFile(project, classpathEntries);
+      BuildpathUtil.createBuildpathFile(project, classpathEntries);
       return true;
     } catch (Exception e) {
       ErrorUtil.handleError(Level.WARNING, "polyglot.ide",

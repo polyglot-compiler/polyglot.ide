@@ -15,7 +15,7 @@ import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 
-import polyglot.ide.common.ClasspathUtil;
+import polyglot.ide.common.BuildpathUtil;
 
 public class JLLaunchDelegate implements ILaunchConfigurationDelegate {
 
@@ -29,9 +29,9 @@ public class JLLaunchDelegate implements ILaunchConfigurationDelegate {
     IProject project =
         ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
     File classpathFile =
-        project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
+        project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
         .toFile();
-    String classpath = ClasspathUtil.parse(classpathFile);
+    String classpath = BuildpathUtil.parse(classpathFile, "");
 
     String classToLaunch =
         configuration.getAttribute("org.eclipse.jdt.launching.MAIN_TYPE", "");

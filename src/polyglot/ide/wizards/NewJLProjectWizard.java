@@ -37,9 +37,8 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.ide.undo.CreateProjectOperation;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 
-import polyglot.ide.common.ClasspathEntry;
-import polyglot.ide.common.ClasspathEntry.ClasspathEntryKind;
-import polyglot.ide.common.ClasspathUtil;
+import polyglot.ide.common.BuildpathEntry;
+import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -154,7 +153,7 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
 
       createSrcBinFolders();
 
-      createClasspathFile();
+      createBuildpathFile();
 
       associateBuilder();
 
@@ -231,23 +230,23 @@ public class NewJLProjectWizard extends Wizard implements INewWizard {
     }
   }
 
-  protected void createClasspathFile() {
-    List<ClasspathEntry> classpathEntries = new ArrayList<>();
-    classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.SRC, "src"));
+  protected void createBuildpathFile() {
+    List<BuildpathEntry> buildpathEntries = new ArrayList<>();
+    buildpathEntries.add(new BuildpathEntry(BuildpathEntry.SRC, "src"));
     List<LibraryResource> libraryResourceList = pageTwo.getClasspathEntries();
 
     if (libraryResourceList != null)
       for (LibraryResource libraryResource : libraryResourceList)
-        classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.LIB,
+        buildpathEntries.add(new BuildpathEntry(BuildpathEntry.LIB,
             libraryResource.getName()));
 
-    classpathEntries.add(new ClasspathEntry(ClasspathEntryKind.OUTPUT, "bin"));
+    buildpathEntries.add(new BuildpathEntry(BuildpathEntry.OUTPUT, "bin"));
 
     try {
-      ClasspathUtil.createClasspathFile(project, classpathEntries);
+      BuildpathUtil.createBuildpathFile(project, buildpathEntries);
     } catch (Exception e) {
       ErrorUtil.handleError(Level.WARNING, "polyglot.ide",
-          "Error creating dot-classpath file. Please check file permissions",
+          "Error creating dot-buildpath file. Please check file permissions",
           e.getCause(), Style.BLOCK);
     }
   }

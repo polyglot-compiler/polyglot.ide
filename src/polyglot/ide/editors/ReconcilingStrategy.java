@@ -30,7 +30,7 @@ import polyglot.frontend.Compiler;
 import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.Job;
 import polyglot.frontend.Source;
-import polyglot.ide.common.ClasspathUtil;
+import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -73,10 +73,10 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
   protected void setupCompilerOptions(ExtensionInfo extInfo) {
     IProject project = editor.getFile().getProject();
     File classpathFile =
-        project.getFile(ClasspathUtil.CLASSPATH_FILE_NAME).getRawLocation()
+        project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
             .toFile();
 
-    String classpath = ClasspathUtil.parse(classpathFile);
+    String classpath = BuildpathUtil.parse(classpathFile, "");
     String sourcepath =
         project.getFile("src").getRawLocation().toFile().toString();
 

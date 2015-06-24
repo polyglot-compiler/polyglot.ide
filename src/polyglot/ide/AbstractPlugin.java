@@ -11,20 +11,9 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class AbstractPlugin extends AbstractUIPlugin {
 
-  /**
-   * Sets the shared instance to {@code this}.
-   */
-  protected abstract void setInstance();
-
-  /**
-   * Clears the shared instance.
-   */
-  protected abstract void clearInstance();
-
   @Override
   public void start(BundleContext context) throws Exception {
     super.start(context);
-    setInstance();
 
     try {
       ResourcesPlugin.getWorkspace().build(
@@ -34,9 +23,4 @@ public abstract class AbstractPlugin extends AbstractUIPlugin {
     }
   }
 
-  @Override
-  public void stop(BundleContext context) throws Exception {
-    clearInstance();
-    super.stop(context);
-  }
 }
