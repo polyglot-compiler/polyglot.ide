@@ -20,20 +20,17 @@ public class BuildpathEntry {
     }
 
     /**
-     * Obtains the Type object corresponding to the given name.
+     * Obtains the canonical Type object corresponding to the given name. A new
+     * Type object will be constructed if the canonical object doesn't already
+     * exist.
      *
      * @param fqName
      *          the name of the Type, qualified by the class of the base plug-in
      *          for which the Type is defined.
-     * @return the requested Type object, or {@code null} if one does not exist.
+     * @return the requested Type object.
      */
     public static Type get(final String fqName) {
-      return Enum.get(Type.class, fqName, new Constructor<Type>() {
-        @Override
-        public Type make() {
-          return new Type(fqName);
-        }
-      });
+      return Enum.get(new Type(fqName));
     }
 
     protected Type(String name) {
@@ -74,20 +71,17 @@ public class BuildpathEntry {
     }
 
     /**
-     * Obtains the Kind object corresponding to the given name.
+     * Obtains the canonical Kind object corresponding to the given name. A new
+     * Kind object will be constructed if the canonical object doesn't already
+     * exist.
      *
      * @param fqName
      *          the name of the Kind, qualified by the class of the base plug-in
      *          for which the Kind is defined.
-     * @return the requested Kind object, or {@code null} if one does not exist.
+     * @return the requested Kind object.
      */
     public static Kind get(final String fqName) {
-      return Enum.get(Kind.class, fqName, new Constructor<Kind>() {
-        @Override
-        public Kind make() {
-          return new Kind(fqName);
-        }
-      });
+      return Enum.get(new Kind(fqName));
     }
 
     protected Kind(String name) {
