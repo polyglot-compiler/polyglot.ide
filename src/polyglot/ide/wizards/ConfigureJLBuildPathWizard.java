@@ -17,12 +17,12 @@ import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
 
-public class JLConfigureBuildPathWizard extends Wizard {
+public class ConfigureJLBuildPathWizard extends Wizard {
   protected final PluginInfo pluginInfo;
   protected IProject project;
   protected NewJLProjectWizardPageTwo buildConfigurationPage;
 
-  JLConfigureBuildPathWizard(PluginInfo pluginInfo, IProject project) {
+  ConfigureJLBuildPathWizard(PluginInfo pluginInfo, IProject project) {
     this.pluginInfo = pluginInfo;
     this.project = project;
   }

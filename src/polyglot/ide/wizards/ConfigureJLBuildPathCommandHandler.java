@@ -25,6 +25,6 @@ public class ConfigureJLBuildPathCommandHandler extends
 
   @Override
   protected Wizard getWizard(IProject project) {
-    return new JLConfigureBuildPathWizard(pluginInfo, project);
+    return new ConfigureJLBuildPathWizard(pluginInfo, project);
   }
 }
