@@ -32,6 +32,8 @@ public class JLNewProjectWizardPageTwo extends NewElementWizardPage {
     super(name);
     this.pluginInfo = pluginInfo;
     this.project = project;
+    setTitle(pluginInfo.langName() + " Settings");
+    setDescription("Define the " + pluginInfo.langName() + " build settings.");
   }
 
   @Override
@@ -53,11 +55,16 @@ public class JLNewProjectWizardPageTwo extends NewElementWizardPage {
     if (project != null) classpathSelector.setItems(extractClasspathEntries());
 
     TabItem item = new TabItem(tabFolder, SWT.NONE);
-    item.setText("&Libraries");
+    item.setText("&Classpath");
     item.setControl(classpathSelector);
+
+    addExtraBuildPathTabs(tabFolder);
 
     Dialog.applyDialogFont(composite);
     setControl(composite);
+  }
+
+  protected void addExtraBuildPathTabs(TabFolder tabFolder) {
   }
 
   protected List<LibraryResource> extractClasspathEntries() {
@@ -74,7 +81,39 @@ public class JLNewProjectWizardPageTwo extends NewElementWizardPage {
     return items;
   }
 
-  public List<LibraryResource> getClasspathEntries() {
-    return classpathSelector.getItems();
+  /**
+   * Converts the given list of resources into {@link BuildpathEntry} objects
+   * that are appended to the given list of entries.
+   *
+   * @param kind
+   *          the kind of entry to add.
+   * @param type
+   *          the type of entry to add.
+   * @param resources
+   *          the resources to convert.
+   * @param entries
+   *          an existing list of {@link BuildpathEntry} objects, to which the
+   *          converted resources will be appended.
+   * @return {@code entries}.
+   */
+  protected List<BuildpathEntry> addBuildpathEntries(BuildpathEntry.Kind kind,
+      BuildpathEntry.Type type, List<LibraryResource> resources,
+      List<BuildpathEntry> entries) {
+    if (resources == null) return entries;
+
+    for (LibraryResource resource : resources) {
+      entries.add(new BuildpathEntry(kind, type, resource.getName()));
+    }
+
+    return entries;
+  }
+
+  /**
+   * @return a list of BuildpathEntry objects for the path that the user has
+   *         configured on this page.
+   */
+  public List<BuildpathEntry> getBuildpathEntries() {
+    return addBuildpathEntries(BuildpathEntry.CLASSPATH, BuildpathEntry.LIB,
+        classpathSelector.getItems(), new ArrayList<>());
   }
 }

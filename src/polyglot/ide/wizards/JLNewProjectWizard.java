@@ -5,7 +5,6 @@
  */
 package polyglot.ide.wizards;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import polyglot.ide.JLPluginInfo;
@@ -35,24 +34,11 @@ public class JLNewProjectWizard extends AbstractNewProjectWizard {
     pageTwo =
         new JLNewProjectWizardPageTwo(pluginInfo, "new"
             + pluginInfo.langShortName() + "ProjectPageTwo");
-    pageTwo.setTitle(pluginInfo.langName() + " Settings");
-    pageTwo.setDescription("Define the " + pluginInfo.langName()
-        + " build settings.");
-
     addPage(pageTwo);
   }
 
   @Override
   protected List<BuildpathEntry> extraBuildpathEntries() {
-    List<BuildpathEntry> result = new ArrayList<>();
-    List<LibraryResource> libraryResourceList = pageTwo.getClasspathEntries();
-
-    if (libraryResourceList != null) {
-      for (LibraryResource libraryResource : libraryResourceList)
-        result.add(new BuildpathEntry(BuildpathEntry.LIB, libraryResource
-            .getName()));
-    }
-
-    return result;
+    return pageTwo.getBuildpathEntries();
   }
 }

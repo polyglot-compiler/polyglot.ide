@@ -1,11 +1,7 @@
 package polyglot.ide.wizards;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.util.List;
-
-import javax.xml.stream.XMLStreamException;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.ICommand;
@@ -26,7 +22,6 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -35,16 +30,12 @@ import org.eclipse.ui.ide.undo.CreateProjectOperation;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 
 import polyglot.ide.PluginInfo;
-import polyglot.ide.common.BuildpathEntry;
-import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
 
-public abstract class AbstractNewProjectWizard extends Wizard implements
-    INewWizard {
-
-  protected final PluginInfo pluginInfo;
+public abstract class AbstractNewProjectWizard extends AbstractBuildPathWizard
+    implements INewWizard {
 
   /**
    * The object selection in the UI with which this wizard was initialized.
@@ -56,14 +47,8 @@ public abstract class AbstractNewProjectWizard extends Wizard implements
    */
   protected WizardNewProjectCreationPage pageOne;
 
-  /**
-   * The project created by this wizard, or {@code null} if it has yet to be
-   * created.
-   */
-  protected IProject project;
-
   protected AbstractNewProjectWizard(PluginInfo pluginInfo) {
-    this.pluginInfo = pluginInfo;
+    super(pluginInfo);
   }
 
   @Override
@@ -167,7 +152,7 @@ public abstract class AbstractNewProjectWizard extends Wizard implements
 
       createSrcBinFolders();
 
-      createBuildpathFile();
+      writeBuildpathFile();
 
       associateBuilder();
 
@@ -224,9 +209,9 @@ public abstract class AbstractNewProjectWizard extends Wizard implements
   private void createSrcBinFolders() {
     int XXX; // hard-coded names.
     IPath srcFolderPath =
-        new Path(project.getName()).makeAbsolute().append("src");
+        new Path(project.getName()).makeAbsolute().append(SRC_DIR_NAME);
     IPath binFolderPath =
-        new Path(project.getName()).makeAbsolute().append("bin");
+        new Path(project.getName()).makeAbsolute().append(OUTPUT_DIR_NAME);
 
     IWorkspaceRoot root = project.getWorkspace().getRoot();
 
@@ -244,34 +229,6 @@ public abstract class AbstractNewProjectWizard extends Wizard implements
               ErrorUtil.toLevel(e.getStatus().getSeverity(), Level.WARNING),
               "Error initializing project structure. Please check file permissions",
               e.getCause(), Style.BLOCK);
-    }
-  }
-
-  /**
-   * Obtains the project's buildpath entries. The default implementation calls
-   * {@link #extraBuildpathEntries()} and adds entries for the source and output
-   * directories to the result.
-   */
-  protected List<BuildpathEntry> buildpathEntries() {
-    List<BuildpathEntry> result = extraBuildpathEntries();
-    int XXX; // hard-coded names
-    result.add(new BuildpathEntry(BuildpathEntry.SRC, "src"));
-    result.add(new BuildpathEntry(BuildpathEntry.OUTPUT, "bin"));
-    return result;
-  }
-
-  protected abstract List<BuildpathEntry> extraBuildpathEntries();
-
-  /**
-   * Creates the project's .buildpath file.
-   */
-  private void createBuildpathFile() {
-    try {
-      BuildpathUtil.createBuildpathFile(project, buildpathEntries());
-    } catch (XMLStreamException | IOException e) {
-      ErrorUtil.handleError(pluginInfo, Level.WARNING,
-          "Error creating .buildpath file. Please check file permisssions",
-          e.getCause(), Style.BLOCK);
     }
   }
 
