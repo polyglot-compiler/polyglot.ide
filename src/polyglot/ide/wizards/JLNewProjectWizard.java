@@ -12,28 +12,28 @@ import polyglot.ide.JLPluginInfo;
 import polyglot.ide.PluginInfo;
 import polyglot.ide.common.BuildpathEntry;
 
-public class NewJLProjectWizard extends AbstractNewProjectWizard {
+public class JLNewProjectWizard extends AbstractNewProjectWizard {
 
-  protected NewJLProjectWizardPageTwo pageTwo;
+  protected JLNewProjectWizardPageTwo pageTwo;
 
   /**
    * A hook for Eclipse to instantiate this class.
    */
-  public NewJLProjectWizard() {
+  public JLNewProjectWizard() {
     this(JLPluginInfo.INSTANCE);
   }
 
   /**
    * A hook for extensions to instantiate this class.
    */
-  public NewJLProjectWizard(PluginInfo pluginInfo) {
+  public JLNewProjectWizard(PluginInfo pluginInfo) {
     super(pluginInfo);
   }
 
   @Override
   protected void addExtraPages() {
     pageTwo =
-        new NewJLProjectWizardPageTwo(pluginInfo, "new"
+        new JLNewProjectWizardPageTwo(pluginInfo, "new"
             + pluginInfo.langShortName() + "ProjectPageTwo");
     pageTwo.setTitle(pluginInfo.langName() + " Settings");
     pageTwo.setDescription("Define the " + pluginInfo.langName()

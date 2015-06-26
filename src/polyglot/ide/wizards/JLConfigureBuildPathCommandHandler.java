@@ -6,25 +6,25 @@ import org.eclipse.jface.wizard.Wizard;
 import polyglot.ide.JLPluginInfo;
 import polyglot.ide.PluginInfo;
 
-public class ConfigureJLBuildPathCommandHandler extends
+public class JLConfigureBuildPathCommandHandler extends
     AbstractConfigureBuildpathCommandHandler {
 
   /**
    * A hook for Eclipse to instantiate this class.
    */
-  public ConfigureJLBuildPathCommandHandler() {
+  public JLConfigureBuildPathCommandHandler() {
     this(JLPluginInfo.INSTANCE);
   }
 
   /**
    * A hook for extensions to instantiate this class.
    */
-  public ConfigureJLBuildPathCommandHandler(PluginInfo pluginInfo) {
+  public JLConfigureBuildPathCommandHandler(PluginInfo pluginInfo) {
     super(pluginInfo);
   }
 
   @Override
   protected Wizard getWizard(IProject project) {
-    return new ConfigureJLBuildPathWizard(pluginInfo, project);
+    return new JLConfigureBuildPathWizard(pluginInfo, project);
   }
 }

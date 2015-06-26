@@ -17,12 +17,12 @@ import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
 
-public class ConfigureJLBuildPathWizard extends Wizard {
+public class JLConfigureBuildPathWizard extends Wizard {
   protected final PluginInfo pluginInfo;
   protected IProject project;
-  protected NewJLProjectWizardPageTwo buildConfigurationPage;
+  protected JLNewProjectWizardPageTwo buildConfigurationPage;
 
-  ConfigureJLBuildPathWizard(PluginInfo pluginInfo, IProject project) {
+  JLConfigureBuildPathWizard(PluginInfo pluginInfo, IProject project) {
     this.pluginInfo = pluginInfo;
     this.project = project;
   }
@@ -30,7 +30,7 @@ public class ConfigureJLBuildPathWizard extends Wizard {
   @Override
   public void addPages() {
     buildConfigurationPage =
-        new NewJLProjectWizardPageTwo(pluginInfo, "buildConfigWizardPage",
+        new JLNewProjectWizardPageTwo(pluginInfo, "buildConfigWizardPage",
             project);
     buildConfigurationPage.setTitle(pluginInfo.langName() + " Settings");
     buildConfigurationPage.setDescription("Define the " + pluginInfo.langName()

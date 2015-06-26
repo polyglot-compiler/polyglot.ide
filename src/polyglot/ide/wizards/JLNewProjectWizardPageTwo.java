@@ -18,16 +18,16 @@ import polyglot.ide.PluginInfo;
 import polyglot.ide.common.BuildpathEntry;
 import polyglot.ide.common.BuildpathUtil;
 
-public class NewJLProjectWizardPageTwo extends NewElementWizardPage {
+public class JLNewProjectWizardPageTwo extends NewElementWizardPage {
   protected final PluginInfo pluginInfo;
   protected LibrarySelector classpathSelector;
   protected IProject project;
 
-  public NewJLProjectWizardPageTwo(PluginInfo pluginInfo, String name) {
+  public JLNewProjectWizardPageTwo(PluginInfo pluginInfo, String name) {
     this(pluginInfo, name, null);
   }
 
-  public NewJLProjectWizardPageTwo(PluginInfo pluginInfo, String name,
+  public JLNewProjectWizardPageTwo(PluginInfo pluginInfo, String name,
       IProject project) {
     super(name);
     this.pluginInfo = pluginInfo;
