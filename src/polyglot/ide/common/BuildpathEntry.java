@@ -94,7 +94,6 @@ public class BuildpathEntry {
   private Kind kind;
   private Type type;
   private String path;
-  private String sourcePath;
 
   public BuildpathEntry(Type type, String path) {
     this(CLASSPATH, type, path);
@@ -118,13 +117,9 @@ public class BuildpathEntry {
     return path;
   }
 
-  public String getSourcePath() {
-    return sourcePath;
-  }
-
   @Override
   public String toString() {
     return "ClasspathEntry [kind=" + kind + "type=" + type + ", path=" + path
-        + ", sourcePath=" + sourcePath + "]";
+        + "]";
   }
 }

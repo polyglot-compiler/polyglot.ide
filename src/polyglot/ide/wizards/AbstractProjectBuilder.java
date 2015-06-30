@@ -3,7 +3,6 @@ package polyglot.ide.wizards;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,11 +30,6 @@ public abstract class AbstractProjectBuilder extends IncrementalProjectBuilder {
     return pluginInfo.makeExtInfo();
   }
 
-  /**
-   * Builds up the command-line arguments with which to invoke the compiler.
-   */
-  protected abstract List<String> compilerArgs(Set<String> filesToCompile);
-
   @Override
   protected IProject[] build(int kind, Map<String, String> args,
       IProgressMonitor monitor) throws CoreException {
@@ -44,7 +38,9 @@ public abstract class AbstractProjectBuilder extends IncrementalProjectBuilder {
     Set<String> filesToCompile = filesToCompile(extInfo);
     if (filesToCompile.isEmpty()) return null;
 
-    String[] compilerArgs = compilerArgs(filesToCompile).toArray(new String[0]);
+    String[] compilerArgs =
+        pluginInfo.compilerArgs(false, getProject(), filesToCompile)
+            .toArray(new String[0]);
     Main main = new Main();
     SilentErrorQueue eq = new SilentErrorQueue(100, "compiler");
 
@@ -62,10 +58,11 @@ public abstract class AbstractProjectBuilder extends IncrementalProjectBuilder {
    */
   protected Set<String> filesToCompile(ExtensionInfo extInfo) {
     Set<String> result = new HashSet<>();
+    for (String srcDir : BuildpathUtil.getSourcePath(pluginInfo,
+        buildpathFile())) {
+      collectAllFiles(new File(srcDir), result, extInfo);
+    }
 
-    // XXX Should get this from .buildpath.
-    File srcDir = getProject().getFile("src").getRawLocation().toFile();
-    collectAllFiles(srcDir, result, extInfo);
     return result;
   }
 
@@ -73,16 +70,14 @@ public abstract class AbstractProjectBuilder extends IncrementalProjectBuilder {
    * @return the location to which the compiler should emit its output
    */
   protected String outputLocation() {
-    // XXX Should get this from .buildpath.
-    return getProject().getFile("bin").getRawLocation().toOSString();
+    return BuildpathUtil.getOutputDir(pluginInfo, getProject());
   }
 
   /**
    * @return the project's .buildpath file.
    */
   protected File buildpathFile() {
-    return getProject().getFile(BuildpathUtil.BUILDPATH_FILE_NAME)
-        .getRawLocation().toFile();
+    return BuildpathUtil.buildpathFile(getProject());
   }
 
   /**
@@ -104,8 +99,9 @@ public abstract class AbstractProjectBuilder extends IncrementalProjectBuilder {
     for (File file : baseDir.listFiles()) {
       if (file.isDirectory())
         collectAllFiles(file, files, extInfo);
-      else if (fileExts.contains(extension(file.getName()))
-          && file.length() != 0) files.add(file.toString());
+      else
+        if (fileExts.contains(extension(file.getName())) && file.length() != 0)
+          files.add(file.toString());
     }
   }
 

@@ -41,7 +41,7 @@ public class JLLaunchDelegate implements ILaunchConfigurationDelegate {
     File classpathFile =
         project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
             .toFile();
-    String classpath = BuildpathUtil.parse(pluginInfo, classpathFile, "");
+    String classpath = BuildpathUtil.parseString(pluginInfo, classpathFile, "");
 
     String classToLaunch =
         configuration.getAttribute("org.eclipse.jdt.launching.MAIN_TYPE", "");

@@ -27,6 +27,7 @@ import org.eclipse.jface.text.hyperlink.URLHyperlinkDetector;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
@@ -118,10 +119,18 @@ org.eclipse.jface.text.source.SourceViewerConfiguration {
     return reconciler;
   }
 
+  /**
+   * Instantiates a reconciling strategy to be used with this
+   * {@link SourceViewerConfiguration}.
+   */
+  protected IReconcilingStrategy getReconcilingStrategy() {
+    return new ReconcilingStrategy(editor);
+  }
+
   @Override
   public IReconciler getReconciler(ISourceViewer sourceViewer) {
     MonoReconciler reconciler =
-        new MonoReconciler(new ReconcilingStrategy(editor), false);
+        new MonoReconciler(getReconcilingStrategy(), false);
     reconciler.install(sourceViewer);
     return reconciler;
   }

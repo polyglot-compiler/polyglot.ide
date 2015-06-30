@@ -19,8 +19,6 @@ import polyglot.ide.common.ErrorUtil.Style;
  * A wizard that writes to a project's .buildpath file.
  */
 public abstract class AbstractBuildPathWizard extends Wizard {
-  protected static final String SRC_DIR_NAME = "src";
-  protected static final String OUTPUT_DIR_NAME = "bin";
   protected final PluginInfo pluginInfo;
 
   /**
@@ -46,8 +44,8 @@ public abstract class AbstractBuildPathWizard extends Wizard {
   protected List<BuildpathEntry> buildpathEntries() {
     List<BuildpathEntry> result = extraBuildpathEntries();
     int XXX; // hard-coded names
-    result.add(new BuildpathEntry(BuildpathEntry.SRC, SRC_DIR_NAME));
-    result.add(new BuildpathEntry(BuildpathEntry.OUTPUT, OUTPUT_DIR_NAME));
+    result.add(new BuildpathEntry(BuildpathEntry.SRC, BuildpathUtil.SRC_DIR_NAME));
+    result.add(new BuildpathEntry(BuildpathEntry.OUTPUT, BuildpathUtil.OUTPUT_DIR_NAME));
     return result;
   }
 

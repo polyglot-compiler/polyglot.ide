@@ -1,11 +1,17 @@
 package polyglot.ide;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.eclipse.core.resources.IProject;
+
 import polyglot.frontend.ExtensionInfo;
 
 /**
  * Encapsulates all information pertaining to a plug-in.
  */
 public interface PluginInfo {
+
   /**
    * @return the fully qualified name by which Eclipse should identify this
    *         plug-in.
@@ -43,4 +49,26 @@ public interface PluginInfo {
    *         plug-in's {@code plugin.xml} file.
    */
   String builderId();
+
+  /**
+   * Builds a list of command-line arguments for the compiler.
+   *
+   * @param validateOnly
+   *          if {@code true}, then arguments for validation mode will be
+   *          generated.
+   * @param project
+   *          the project for which command-line arguments should be built.
+   * @param sourceFiles
+   *          specifies the names of the files to compile.
+   * @return a list of command-line arguments to the compiler for compiling the
+   *         given list of source files, using the configuration specified in
+   *         the given .buildpath file.
+   */
+  List<String> compilerArgs(boolean validateOnly, IProject project,
+      Collection<String> sourceFiles);
+
+  /**
+   * @return the default compiler output directory for the given project.
+   */
+  String defaultOutputLocation(IProject project);
 }

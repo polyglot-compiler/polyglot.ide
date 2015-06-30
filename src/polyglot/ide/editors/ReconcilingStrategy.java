@@ -1,7 +1,6 @@
 package polyglot.ide.editors;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,7 +30,6 @@ import polyglot.frontend.ExtensionInfo;
 import polyglot.frontend.Job;
 import polyglot.frontend.Source;
 import polyglot.ide.PluginInfo;
-import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -74,21 +72,15 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
   protected void setupCompilerOptions(ExtensionInfo extInfo) {
     IProject project = editor.getFile().getProject();
-    File classpathFile =
-        project.getFile(BuildpathUtil.BUILDPATH_FILE_NAME).getRawLocation()
-            .toFile();
-
-    String classpath = BuildpathUtil.parse(pluginInfo, classpathFile, "");
-    String sourcepath =
-        project.getFile("src").getRawLocation().toFile().toString();
+    String[] compilerArgs = pluginInfo
+        .compilerArgs(true, project, Collections.singletonList("/dev/null"))
+        .toArray(new String[0]);
 
     try {
       // TODO Need a better way of setting up these options.
       Options options = extInfo.getOptions();
       Options.global = options;
-      options.parseCommandLine(new String[] { "-d", "/tmp", "/dev/null",
-          "-classpath", classpath, "-sourcepath", sourcepath },
-          new HashSet<String>());
+      options.parseCommandLine(compilerArgs, new HashSet<String>());
     } catch (UsageError e) {
       ErrorUtil.handleError(pluginInfo, Level.ERROR, "Compiler error",
           "An error occurred while configuring the compiler.", e, Style.LOG);
@@ -140,7 +132,8 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
       }
 
       @Override
-      public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
+      public Reader openReader(boolean ignoreEncodingErrors)
+          throws IOException {
         return new StringReader(document.get());
       }
 
@@ -220,9 +213,8 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     } catch (CoreException | BadLocationException e) {
       Level severity = Level.WARNING;
       if (e instanceof CoreException) {
-        severity =
-            ErrorUtil.toLevel(((CoreException) e).getStatus().getSeverity(),
-                Level.ERROR);
+        severity = ErrorUtil.toLevel(
+            ((CoreException) e).getStatus().getSeverity(), Level.ERROR);
       }
 
       ErrorUtil.handleError(pluginInfo, severity,
@@ -232,8 +224,8 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
   protected boolean checkNature(IProject project) {
     try {
-      return Arrays.asList(project.getDescription().getNatureIds()).contains(
-          pluginInfo.natureID());
+      return Arrays.asList(project.getDescription().getNatureIds())
+          .contains(pluginInfo.natureID());
     } catch (CoreException e) {
       e.printStackTrace();
       return false;

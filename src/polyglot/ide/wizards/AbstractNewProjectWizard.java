@@ -30,6 +30,7 @@ import org.eclipse.ui.ide.undo.CreateProjectOperation;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 
 import polyglot.ide.PluginInfo;
+import polyglot.ide.common.BuildpathUtil;
 import polyglot.ide.common.ErrorUtil;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -209,9 +210,9 @@ public abstract class AbstractNewProjectWizard extends AbstractBuildPathWizard
   private void createSrcBinFolders() {
     int XXX; // hard-coded names.
     IPath srcFolderPath =
-        new Path(project.getName()).makeAbsolute().append(SRC_DIR_NAME);
+        new Path(project.getName()).makeAbsolute().append(BuildpathUtil.SRC_DIR_NAME);
     IPath binFolderPath =
-        new Path(project.getName()).makeAbsolute().append(OUTPUT_DIR_NAME);
+        new Path(project.getName()).makeAbsolute().append(BuildpathUtil.OUTPUT_DIR_NAME);
 
     IWorkspaceRoot root = project.getWorkspace().getRoot();
 
