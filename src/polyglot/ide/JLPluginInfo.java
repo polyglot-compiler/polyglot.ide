@@ -102,7 +102,6 @@ public class JLPluginInfo implements PluginInfo {
     classpath.addAll(baseClasspath());
 
     result.addAll(Arrays.asList("-d", outputPath));
-    System.out.println(getClass() + "\t" + outputPath + "\t" + sourceFiles);
 
     if (!classpath.isEmpty()) {
       result.addAll(
