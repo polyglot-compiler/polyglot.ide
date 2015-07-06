@@ -27,7 +27,7 @@
 				name="JL7"/>
 		<wizard
 				category="polyglot.ide.category.wizards"
-				class="polyglot.jl7.ide.wizards.NewJL7ProjectWizard"
+				class="polyglot.jl7.ide.wizards.JL7NewProjectWizard"
 				id="polyglot.jl7.ide.wizards.new.jl7project"
 				name="JL7 Project"
 				project="true"
@@ -46,7 +46,7 @@
   		<menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=export">
      		<menu id="buildPathMenu" label="Build Path">
      		<command
-           		commandId="polyglot.ide.commands.configureBuildPathCommand"
+           		commandId="polyglot.jl7.ide.commands.configureBuildPathCommand"
            		label="Configure Build Path..."
            		style="push">
            		
@@ -63,4 +63,15 @@
   		</menuContribution>
 	</extension>
 	
+	<extension point="org.eclipse.ui.commands">
+		<command id="polyglot.jl7.ide.commands.configureBuildPathCommand" name="Configure Build Path Command" />
+	</extension>
+	
+	<extension point="org.eclipse.ui.handlers">
+      <handler
+            class="polyglot.jl7.ide.wizards.JL7ConfigureBuildPathCommandHandler"
+            commandId="polyglot.jl7.ide.commands.configureBuildPathCommand">
+      </handler>
+    </extension>
+    
 </plugin>

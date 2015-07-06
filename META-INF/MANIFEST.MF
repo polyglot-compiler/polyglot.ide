@@ -7,8 +7,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: classes/,
  lib/java_cup.jar,
  lib/jflex.jar,
- lib/polyglot-ide.jar,
- lib/polyglot.jar
+ lib/polyglot/,
+ lib/polyglot-ide/,
+ lib/polyglot-jl5-ide/
 Bundle-Activator: polyglot.jl7.ide.JL7Plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

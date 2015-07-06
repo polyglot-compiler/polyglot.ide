@@ -1,7 +1,6 @@
 package polyglot.jl7.ide;
 
-import polyglot.ide.JLPlugin;
+import polyglot.jl5.ide.JL5Plugin;
 
-public class JL7Plugin extends JLPlugin {
-	public static final String PLUGIN_ID = "polyglot.jl7.ide";
+public class JL7Plugin extends JL5Plugin {
 }
