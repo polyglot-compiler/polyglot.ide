@@ -1,13 +1,14 @@
 package polyglot.jl5.ide;
 
-import polyglot.ext.jl5.JL5ExtensionInfo;
-import polyglot.frontend.ExtensionInfo;
 import polyglot.ide.JLProjectBuilder;
+import polyglot.ide.PluginInfo;
 
 public class JL5ProjectBuilder extends JLProjectBuilder {
+	public JL5ProjectBuilder() {
+	  this(JL5PluginInfo.INSTANCE);
+	}
 	
-	@Override
-	protected ExtensionInfo getExtensionInfo() {
-		return new JL5ExtensionInfo();
+	public JL5ProjectBuilder(PluginInfo pluginInfo) {
+	  super(pluginInfo);
 	}
 }
