@@ -8,8 +8,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 
-public class MoveResourceSelectionListener extends
-AbstractLibrarySelectionListener {
+public class MoveResourceSelectionListener
+    extends AbstractLibrarySelectionListener {
 
   private MoveDirection moveDirection;
 
@@ -25,6 +25,7 @@ AbstractLibrarySelectionListener {
 
   @Override
   protected void onSelect(SelectionEvent e) {
+    @SuppressWarnings("unchecked")
     List<String> allItems = (List<String>) treeViewer.getTree().getData();
 
     StructuredSelection structuredSelection =
@@ -39,8 +40,9 @@ AbstractLibrarySelectionListener {
 
     if (moveDirection.equals(MoveDirection.UP) && i != 0)
       j = i - 1;
-    else if (moveDirection.equals(MoveDirection.DOWN)
-        && i != allItems.size() - 1) j = i + 1;
+    else
+      if (moveDirection.equals(MoveDirection.DOWN) && i != allItems.size() - 1)
+        j = i + 1;
 
     if (j != -1) {
       Collections.swap(allItems, i, j);

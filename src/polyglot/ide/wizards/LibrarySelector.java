@@ -30,61 +30,60 @@ public class LibrarySelector extends Composite {
     label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
 
     treeViewer = new TreeViewer(this, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-    treeViewer.getControl().setLayoutData(
-        new GridData(SWT.FILL, SWT.FILL, true, true, 1, 8));
+    treeViewer.getControl()
+        .setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 8));
     treeViewer.setContentProvider(new TreeViewContentProvider());
     treeViewer.setLabelProvider(new TreeViewLabelProvider());
 
     Button addJar = new Button(this, SWT.PUSH);
     addJar.setText("Add JARs...");
     addJar
-    .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
     addJar.addSelectionListener(new AddJarSelectionListener(this, treeViewer));
 
     Button addExternalJar = new Button(this, SWT.PUSH);
     addExternalJar.setText("Add External JARs...");
-    addExternalJar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-        false, 1, 1));
-    addExternalJar.addSelectionListener(new AddExternalJarSelectionListener(
-        this, treeViewer));
+    addExternalJar
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+    addExternalJar.addSelectionListener(
+        new AddExternalJarSelectionListener(this, treeViewer));
 
     Button addClassFolder = new Button(this, SWT.PUSH);
     addClassFolder.setText("Add Class Folder...");
-    addClassFolder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-        false, 1, 1));
-    addClassFolder.addSelectionListener(new AddClassFolderSelectionListener(
-        this, treeViewer));
+    addClassFolder
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+    addClassFolder.addSelectionListener(
+        new AddClassFolderSelectionListener(this, treeViewer));
 
     Button addExternalClassFolder = new Button(this, SWT.PUSH);
     addExternalClassFolder.setText("Add External Class Folder...");
-    addExternalClassFolder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-        false, false, 1, 1));
     addExternalClassFolder
-    .addSelectionListener(new AddExternalClassFolderSelectionListener(this,
-        treeViewer));
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+    addExternalClassFolder.addSelectionListener(
+        new AddExternalClassFolderSelectionListener(this, treeViewer));
 
     Button removeButton = new Button(this, SWT.PUSH);
     removeButton.setText("Remove");
-    removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false,
-        1, 1));
-    removeButton.addSelectionListener(new RemoveResourceSelectionListener(this,
-        treeViewer));
+    removeButton
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+    removeButton.addSelectionListener(
+        new RemoveResourceSelectionListener(this, treeViewer));
 
     Label separator = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
     separator
-    .setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+        .setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 
     Button moveUpButton = new Button(this, SWT.PUSH);
     moveUpButton.setText("Move Up");
-    moveUpButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false,
-        1, 1));
+    moveUpButton
+        .setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
     moveUpButton.addSelectionListener(new MoveResourceSelectionListener(parent,
         treeViewer, MoveDirection.UP));
 
     Button moveDownButton = new Button(this, SWT.PUSH);
     moveDownButton.setText("Move Down");
-    moveDownButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false,
-        false, 1, 1));
+    moveDownButton
+        .setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
     moveDownButton.addSelectionListener(new MoveResourceSelectionListener(
         parent, treeViewer, MoveDirection.DOWN));
 
@@ -109,7 +108,9 @@ public class LibrarySelector extends Composite {
 
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-      items = (List<LibraryResource>) newInput;
+      @SuppressWarnings("unchecked")
+      List<LibraryResource> items = (List<LibraryResource>) newInput;
+      this.items = items;
     }
 
     @Override

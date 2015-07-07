@@ -13,8 +13,8 @@ import org.eclipse.ui.PlatformUI;
 
 import polyglot.ide.PluginInfo;
 
-public abstract class AbstractConfigureBuildpathCommandHandler extends
-    AbstractHandler {
+public abstract class AbstractConfigureBuildpathCommandHandler
+    extends AbstractHandler {
 
   protected final PluginInfo pluginInfo;
 
@@ -29,8 +29,7 @@ public abstract class AbstractConfigureBuildpathCommandHandler extends
     IStructuredSelection selection =
         (IStructuredSelection) window.getSelectionService().getSelection();
     Object firstElement = selection.getFirstElement();
-    IProject project =
-        (IProject) ((IAdaptable) firstElement).getAdapter(IProject.class);
+    IProject project = ((IAdaptable) firstElement).getAdapter(IProject.class);
 
     Wizard wizard = getWizard(project);
     WizardDialog dialog = new WizardDialog(window.getShell(), wizard);

@@ -31,14 +31,14 @@ public class AddJarSelectionListener extends AbstractLibrarySelectionListener {
 
     if (dialog.getResult() == null) return;
 
+    @SuppressWarnings("unchecked")
     List<LibraryResource> items =
         (List<LibraryResource>) treeViewer.getTree().getData();
     if (items == null) items = new ArrayList<>();
 
     for (Object o : dialog.getResult()) {
       IFile file = (IFile) o;
-      String name =
-          file.getProject().getName() + File.separator
+      String name = file.getProject().getName() + File.separator
           + file.getProjectRelativePath().toString();
       LibraryResource newItem = new LibraryResource(name);
       if (!items.contains(newItem)) items.add(newItem);

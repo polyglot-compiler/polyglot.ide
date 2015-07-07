@@ -10,8 +10,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
-public class AddExternalJarSelectionListener extends
-AbstractLibrarySelectionListener {
+public class AddExternalJarSelectionListener
+    extends AbstractLibrarySelectionListener {
 
   AddExternalJarSelectionListener(Composite parent, TreeViewer treeViewer) {
     super(parent, treeViewer);
@@ -29,6 +29,7 @@ AbstractLibrarySelectionListener {
     String baseDir =
         fullFilePath.substring(0, fullFilePath.lastIndexOf(File.separatorChar));
 
+    @SuppressWarnings("unchecked")
     List<LibraryResource> items =
         (List<LibraryResource>) treeViewer.getTree().getData();
     if (items == null) items = new ArrayList<>();

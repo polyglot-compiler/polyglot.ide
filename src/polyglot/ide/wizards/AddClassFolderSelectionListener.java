@@ -13,8 +13,8 @@ import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public class AddClassFolderSelectionListener extends
-AbstractLibrarySelectionListener {
+public class AddClassFolderSelectionListener
+    extends AbstractLibrarySelectionListener {
 
   AddClassFolderSelectionListener(Composite parent, TreeViewer treeViewer) {
     super(parent, treeViewer);
@@ -32,14 +32,14 @@ AbstractLibrarySelectionListener {
 
     if (dialog.getResult() == null) return;
 
+    @SuppressWarnings("unchecked")
     List<LibraryResource> items =
         (List<LibraryResource>) treeViewer.getTree().getData();
     if (items == null) items = new ArrayList<>();
 
     for (Object o : dialog.getResult()) {
       IFolder folder = ((IFolder) o);
-      String name =
-          folder.getProject().getName() + File.separator
+      String name = folder.getProject().getName() + File.separator
           + folder.getProjectRelativePath().toString();
       LibraryResource newItem = new LibraryResource(name);
       if (!items.contains(newItem)) items.add(newItem);

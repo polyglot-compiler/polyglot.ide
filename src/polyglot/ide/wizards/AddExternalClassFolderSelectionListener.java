@@ -8,8 +8,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
-public class AddExternalClassFolderSelectionListener extends
-AbstractLibrarySelectionListener {
+public class AddExternalClassFolderSelectionListener
+    extends AbstractLibrarySelectionListener {
 
   AddExternalClassFolderSelectionListener(Composite parent,
       TreeViewer treeViewer) {
@@ -25,6 +25,7 @@ AbstractLibrarySelectionListener {
     if (folderPath == null) return;
 
     LibraryResource newItem = new LibraryResource(folderPath);
+    @SuppressWarnings("unchecked")
     List<LibraryResource> items =
         (List<LibraryResource>) treeViewer.getTree().getData();
     if (items == null) items = new ArrayList<>();
