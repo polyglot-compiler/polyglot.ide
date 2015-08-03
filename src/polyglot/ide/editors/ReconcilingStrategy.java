@@ -106,98 +106,10 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
     setupCompilerOptions(extInfo);
     Compiler compiler = new Compiler(extInfo, eq);
 
-    // Create a Source object out of the document's contents.
-    Source source = new Source() {
-      Source.Kind kind = Source.Kind.USER_SPECIFIED;
-      final long lastModified = System.currentTimeMillis();
-
-      @Override
-      public URI toUri() {
-        return editor.getFile().getLocationURI();
-      }
-
-      @Override
-      public String getName() {
-        return editor.getFile().getName();
-      }
-
-      @Override
-      public InputStream openInputStream() throws IOException {
-        return new ByteArrayInputStream(document.get().getBytes("UTF-8"));
-      }
-
-      @Override
-      public OutputStream openOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public Reader openReader(boolean ignoreEncodingErrors)
-          throws IOException {
-        return new StringReader(document.get());
-      }
-
-      @Override
-      public CharSequence getCharContent(boolean ignoreEncodingErrors)
-          throws IOException {
-        return document.get();
-      }
-
-      @Override
-      public Writer openWriter() throws IOException {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public long getLastModified() {
-        return lastModified;
-      }
-
-      @Override
-      public boolean delete() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public void setUserSpecified(boolean userSpecified) {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public boolean userSpecified() {
-        return kind == Kind.USER_SPECIFIED;
-      }
-
-      @Override
-      public boolean compilerGenerated() {
-        return kind == Kind.COMPILER_GENERATED;
-      }
-
-      @Override
-      public void setKind(Kind kind) {
-        this.kind = kind;
-      }
-
-      @Override
-      public Kind kind() {
-        return kind;
-      }
-
-      @Override
-      public String name() {
-        return getName();
-      }
-
-      @Override
-      public String path() {
-        return editor.getFile().getLocation().toString();
-      }
-    };
-
-    // Validate.
+    // Validate the document.
     boolean success;
     try {
-      success = compiler.validate(Collections.singleton(source));
+      success = compiler.validate(Collections.singleton(makeSource()));
       if (success) addToOutputMap(compiler.jobs());
     } catch (Throwable t) {
       ErrorUtil.handleError(pluginInfo, Level.ERROR, "Compiler error",
@@ -219,6 +131,99 @@ public class ReconcilingStrategy implements IReconcilingStrategy {
 
       ErrorUtil.handleError(pluginInfo, severity,
           "Error updating problem markers", e.getMessage(), e, Style.SHOW);
+    }
+  }
+
+  /**
+   * @return a Source object with the document's contents.
+   */
+  protected Source makeSource() {
+    return new DocumentSource();
+  }
+
+  protected class DocumentSource implements Source {
+    Source.Kind kind = Source.Kind.USER_SPECIFIED;
+    final long lastModified = System.currentTimeMillis();
+
+    @Override
+    public URI toUri() {
+      return editor.getFile().getLocationURI();
+    }
+
+    @Override
+    public String getName() {
+      return editor.getFile().getName();
+    }
+
+    @Override
+    public InputStream openInputStream() throws IOException {
+      return new ByteArrayInputStream(document.get().getBytes("UTF-8"));
+    }
+
+    @Override
+    public OutputStream openOutputStream() throws IOException {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
+      return new StringReader(document.get());
+    }
+
+    @Override
+    public CharSequence getCharContent(boolean ignoreEncodingErrors)
+        throws IOException {
+      return document.get();
+    }
+
+    @Override
+    public Writer openWriter() throws IOException {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long getLastModified() {
+      return lastModified;
+    }
+
+    @Override
+    public boolean delete() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setUserSpecified(boolean userSpecified) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean userSpecified() {
+      return kind == Kind.USER_SPECIFIED;
+    }
+
+    @Override
+    public boolean compilerGenerated() {
+      return kind == Kind.COMPILER_GENERATED;
+    }
+
+    @Override
+    public void setKind(Kind kind) {
+      this.kind = kind;
+    }
+
+    @Override
+    public Kind kind() {
+      return kind;
+    }
+
+    @Override
+    public String name() {
+      return getName();
+    }
+
+    @Override
+    public String path() {
+      return editor.getFile().getLocation().toString();
     }
   }
 
