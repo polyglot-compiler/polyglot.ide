@@ -29,6 +29,7 @@ public abstract class AbstractConfigureBuildpathCommandHandler
     IStructuredSelection selection =
         (IStructuredSelection) window.getSelectionService().getSelection();
     Object firstElement = selection.getFirstElement();
+    @SuppressWarnings("cast") // Old versions of getAdapter() returned Object.
     IProject project =
         (IProject) ((IAdaptable) firstElement).getAdapter(IProject.class);
 
