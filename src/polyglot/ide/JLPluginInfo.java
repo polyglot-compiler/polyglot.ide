@@ -71,7 +71,7 @@ public class JLPluginInfo implements PluginInfo {
   public List<String> compilerArgs(boolean validateOnly, IProject project,
       Collection<String> sourceFiles) {
     return addCompilerArgs(validateOnly, project, sourceFiles,
-        new ArrayList<>());
+        new ArrayList<String>());
   }
 
   /**

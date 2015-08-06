@@ -29,7 +29,8 @@ public abstract class AbstractConfigureBuildpathCommandHandler
     IStructuredSelection selection =
         (IStructuredSelection) window.getSelectionService().getSelection();
     Object firstElement = selection.getFirstElement();
-    IProject project = ((IAdaptable) firstElement).getAdapter(IProject.class);
+    IProject project =
+        (IProject) ((IAdaptable) firstElement).getAdapter(IProject.class);
 
     Wizard wizard = getWizard(project);
     WizardDialog dialog = new WizardDialog(window.getShell(), wizard);

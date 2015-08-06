@@ -114,6 +114,6 @@ public class JLNewProjectWizardPageTwo extends NewElementWizardPage {
    */
   public List<BuildpathEntry> getBuildpathEntries() {
     return addBuildpathEntries(BuildpathEntry.CLASSPATH, BuildpathEntry.LIB,
-        classpathSelector.getItems(), new ArrayList<>());
+        classpathSelector.getItems(), new ArrayList<BuildpathEntry>());
   }
 }

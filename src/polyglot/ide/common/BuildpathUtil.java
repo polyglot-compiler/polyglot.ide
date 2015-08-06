@@ -128,7 +128,7 @@ public class BuildpathUtil {
       BuildpathEntry.Kind buildpathKind, BuildpathEntry.Type buildpathType) {
     BuildpathContentHandler contentHandler = getContentHandler(pluginInfo,
         dotBuildpath, buildpathKind, buildpathType);
-    return contentHandler == null ? new ArrayList<>()
+    return contentHandler == null ? new ArrayList<String>()
         : contentHandler.getPath();
   }
 

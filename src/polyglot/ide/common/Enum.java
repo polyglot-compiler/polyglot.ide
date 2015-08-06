@@ -29,13 +29,11 @@ public class Enum {
    */
   public static <T extends Enum> T get(T fresh) {
     Pair<Class<? extends Enum>, String> enumKey =
-        new Pair<>(fresh.getClass(), fresh.name());
+        new Pair<Class<? extends Enum>, String>(fresh.getClass(), fresh.name());
 
-    @SuppressWarnings("unchecked")
     final T result = (T) cache.get(enumKey);
     if (result != null) return result;
 
-    @SuppressWarnings("unchecked")
     final T existing = (T) cache.putIfAbsent(enumKey, fresh);
     return existing == null ? fresh : existing;
   }
