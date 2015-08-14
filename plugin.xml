@@ -39,7 +39,7 @@
 				id="polyglot.ide.wizards.new.jlproject"
 				name="JL Project"
 				project="true"
-				icon="/images/polyglot-logo.png"/>
+				icon="images/polyglot-logo.png"/>
 	</extension>	
 	
 	<extension
