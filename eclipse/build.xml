@@ -76,9 +76,11 @@
             <fileset dir="${src}"/>
         </copy>
 
-        <!-- Copy class files. -->
+        <!-- Copy class and image files and plugin.xml. -->
         <copy todir="${tmp}" includeEmptyDirs="false">
             <fileset dir="${classes}"/>
+            <fileset dir="${polyglot-ide.home}/images"/>
+            <fileset file="${polyglot-ide.home}/plugin.xml"/>
         </copy>
 
         <jar destfile="${plugins}/polyglot.ide_${plugin.version}.jar"
