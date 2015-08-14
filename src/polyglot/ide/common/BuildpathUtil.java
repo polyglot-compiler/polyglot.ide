@@ -17,8 +17,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter;
-
 import polyglot.ide.PluginInfo;
 import polyglot.ide.common.ErrorUtil.Level;
 import polyglot.ide.common.ErrorUtil.Style;
@@ -48,8 +46,8 @@ public class BuildpathUtil {
           throws XMLStreamException, IOException {
 
     XMLOutputFactory xof = XMLOutputFactory.newInstance();
-    XMLStreamWriter xtw = new IndentingXMLStreamWriter(
-        xof.createXMLStreamWriter(new FileWriter(buildpathFile(project))));
+    XMLStreamWriter xtw =
+        xof.createXMLStreamWriter(new FileWriter(buildpathFile(project)));
 
     xtw.writeStartDocument("UTF-8", "1.0");
 
