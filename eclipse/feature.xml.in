@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="polyglot.ide"
+      label="Polyglot IDE"
+      version="@version@">
+
+   <description url="https://www.cs.cornell.edu/Projects/polyglot/">
+      The Polyglot extensible IDE framework
+   </description>
+
+   <copyright
+         url="https://www.cs.cornell.edu/Projects/polyglot/ide/copyright.html">
+      Copyright (C) 2014-@year@ Polyglot project group, Cornell University
+   </copyright>
+
+   <license url="https://www.cs.cornell.edu/Projects/polyglot/ide/license.html">
+      This release of the Polyglot IDE is governed by the GNU Lesser General Public License, version 2.1.
+   </license>
+
+   <url>
+      <update label="Polyglot Updates"
+            url="https://www.cs.cornell.edu/projects/polyglot/ide/"/>
+      <discovery label="Polyglot project page"
+            url="https://www.cs.cornell.edu/projects/polyglot/"/>
+   </url>
+
+   <requires>
+      <import plugin="polyglot"/>
+   </requires>
+
+   <plugin
+         id="polyglot.ide"
+         download-size="0"
+         install-size="0"
+         version="@version@"/>
+</feature>
+<!--
+vim: ts=3 sw=3 ai et
+-->
