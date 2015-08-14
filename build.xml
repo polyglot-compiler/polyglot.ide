@@ -49,6 +49,7 @@
   </path>
 
   <!-- Eclipse plugins classpath -->
+  <!-- TODO: Handle case where JARs are installed in user's workspace. -->
   <path id="eclipse.classpath">
     <fileset dir="${eclipse.home}/plugins">
       <include name="**/*.jar"/>
@@ -129,7 +130,8 @@
   <target name="eclipse" depends="eclipse-check"
       unless="eclipse.up-to-date"
       description="Configures Eclipse's .classpath file">
-    <copy file="eclipse-classpath.in" tofile=".classpath"/>
+    <copy file="${polyglot-ide.home}/eclipse/classpath.in"
+        tofile="${polyglot-ide.home}/.classpath"/>
   </target>
 
   <!--
@@ -170,7 +172,7 @@
 
   <target name="eclipse-check">
     <uptodate property="eclipse.up-to-date" targetfile=".classpath"
-        srcfile="eclipse-classpath.in"/>
+        srcfile="${polyglot-ide.home}/eclipse/classpath.in"/>
   </target>
 
   <!--
