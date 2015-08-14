@@ -2,9 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="classes"/>
-	<classpathentry kind="lib" path="lib/polyglot"/>
-	<classpathentry kind="lib" path="lib/java_cup.jar"/>
-	<classpathentry kind="lib" path="lib/jflex.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 </classpath>
