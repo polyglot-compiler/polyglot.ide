@@ -1,0 +1,15 @@
+# Configuration properties for Polyglot IDE.
+
+
+# Polyglot source directory
+#
+# This is optional. Defaults to "${polyglot-ide.home}/../polyglot".
+
+#polyglot.home=${polyglot-ide.home}/../polyglot
+
+
+# Eclipse installation directory
+#
+# This is optional. Defaults to "/usr/lib/eclipse".
+
+#eclipse.home=/usr/lib/eclipse

@@ -1,23 +1,21 @@
 Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.6
+Created-By: 1.8.0_51-b16 (Oracle Corporation)
 Bundle-ManifestVersion: 2
 Bundle-Name: Polyglot IDE
 Bundle-SymbolicName: polyglot.ide;singleton:=true
 Bundle-Version: 0.1.0
 Bundle-Activator: polyglot.ide.JLPlugin
-Require-Bundle: org.eclipse.ui;visibility:=reexport,
- org.eclipse.core.runtime;visibility:=reexport,
- org.eclipse.jface.text;visibility:=reexport,
- org.eclipse.ui.editors;visibility:=reexport,
- org.eclipse.ui.ide;visibility:=reexport,
- org.eclipse.jdt.ui;visibility:=reexport,
- org.eclipse.jdt.launching;bundle-version="3.6.100";visibility:=reexport,
- org.eclipse.debug.ui;bundle-version="3.8.1";visibility:=reexport,
- org.eclipse.core.filesystem;bundle-version="1.3.200";visibility:=reexport,
- polyglot;bundle-version="[2.7.0,2.8.0)";visibility:=reexport
+Require-Bundle: org.eclipse.ui;visibility:=reexport,org.eclipse.core.r
+ untime;visibility:=reexport,org.eclipse.jface.text;visibility:=reexpo
+ rt,org.eclipse.ui.editors;visibility:=reexport,org.eclipse.ui.ide;vis
+ ibility:=reexport,org.eclipse.jdt.ui;visibility:=reexport,org.eclipse
+ .jdt.launching;bundle-version="3.6.100";visibility:=reexport,org.ecli
+ pse.debug.ui;bundle-version="3.8.1";visibility:=reexport,org.eclipse.
+ core.filesystem;bundle-version="1.3.200";visibility:=reexport,polyglo
+ t;bundle-version="[2.7.0,2.8.0)";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: polyglot.ide,
- polyglot.ide.common,
- polyglot.ide.editors,
- polyglot.ide.natures,
- polyglot.ide.wizards
+Export-Package: polyglot.ide,polyglot.ide.common,polyglot.ide.editors,
+ polyglot.ide.natures,polyglot.ide.wizards
+
