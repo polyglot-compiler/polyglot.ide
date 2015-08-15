@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>polyglot.jl5.ide</name>
+	<name>polyglot.ide.jl5</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -12,6 +12,7 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>

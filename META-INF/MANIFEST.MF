@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Polyglot JL5 IDE
-Bundle-SymbolicName: polyglot.jl5.ide;singleton:=true
+Bundle-SymbolicName: polyglot.ide.jl5;singleton:=true
 Bundle-Version: 0.1.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-Activator: polyglot.jl5.ide.JL5Plugin
+Bundle-Activator: polyglot.ide.jl5.JL5Plugin
 Require-Bundle: polyglot.ide;bundle-version="[0.1.0,0.2.0)";visibility:=reexport
 Bundle-ActivationPolicy: lazy
-Export-Package: polyglot.jl5.ide,
- polyglot.jl5.ide.editors,
- polyglot.jl5.ide.wizards
+Export-Package: polyglot.ide.jl5,
+ polyglot.ide.jl5.editors,
+ polyglot.ide.jl5.wizards

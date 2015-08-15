@@ -1,4 +1,4 @@
-package polyglot.jl5.ide;
+package polyglot.ide.jl5;
 
 import polyglot.ide.PluginInfo;
 import polyglot.ide.natures.JLNature;

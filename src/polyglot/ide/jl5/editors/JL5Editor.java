@@ -1,8 +1,8 @@
-package polyglot.jl5.ide.editors;
+package polyglot.ide.jl5.editors;
 
 import polyglot.ide.PluginInfo;
 import polyglot.ide.editors.JLEditor;
-import polyglot.jl5.ide.JL5PluginInfo;
+import polyglot.ide.jl5.JL5PluginInfo;
 
 public class JL5Editor extends JLEditor {
 

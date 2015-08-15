@@ -5,19 +5,19 @@
 		<editor
 				name="Polyglot JL5 Editor"
 				extensions="jl5"
-				class="polyglot.jl5.ide.editors.JL5Editor"
-				id="polyglot.jl5.ide.editors.Editor"
+				class="polyglot.ide.jl5.editors.JL5Editor"
+				id="polyglot.ide.jl5.editors.Editor"
 		/>
 	</extension>
 	
 	<extension
 			point="org.eclipse.core.resources.natures"
-			id="polyglot.jl5.ide.jl5nature"
+			id="polyglot.ide.jl5.jl5nature"
 			name="JL5 Nature">
 		<runtime>
-			<run class="polyglot.jl5.ide.JL5Nature"/>
+			<run class="polyglot.ide.jl5.JL5Nature"/>
 		</runtime>
-		<builder id="polyglot.jl5.ide.jl5Builder" />
+		<builder id="polyglot.ide.jl5.jl5Builder" />
 	</extension>
 	
 	<extension
@@ -27,8 +27,8 @@
 				name="JL5"/>
 		<wizard
 				category="polyglot.ide.category.wizards"
-				class="polyglot.jl5.ide.wizards.JL5NewProjectWizard"
-				id="polyglot.jl5.ide.wizards.new.jl5project"
+				class="polyglot.ide.jl5.wizards.JL5NewProjectWizard"
+				id="polyglot.ide.jl5.wizards.new.jl5project"
 				name="JL5 Project"
 				project="true"
 				icon="/images/polyglot-logo.png"/>
@@ -37,7 +37,7 @@
 	<extension
       id="jl5Builder" name="JL5 Project Builder" point="org.eclipse.core.resources.builders">
       <builder hasNature="true">
-         <run class="polyglot.jl5.ide.JL5ProjectBuilder">
+         <run class="polyglot.ide.jl5.JL5ProjectBuilder">
          </run>
       </builder>
    </extension>
@@ -46,14 +46,14 @@
   		<menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=export">
      		<menu id="buildPathMenu" label="Build Path">
      		<command
-           		commandId="polyglot.jl5.ide.commands.configureBuildPathCommand"
+           		commandId="polyglot.ide.jl5.commands.configureBuildPathCommand"
            		label="Configure Build Path..."
            		style="push">
            		
            		<visibleWhen>
 					<iterate operator="and">
 					<test property="org.eclipse.core.resources.projectNature"
-					value="polyglot.jl5.ide.jl5nature">
+					value="polyglot.ide.jl5.jl5nature">
 					</test>
 					</iterate>
 				</visibleWhen> 
@@ -64,13 +64,13 @@
 	</extension>
 	
 	<extension point="org.eclipse.ui.commands">
-		<command id="polyglot.jl5.ide.commands.configureBuildPathCommand" name="Configure Build Path Command" />
+		<command id="polyglot.ide.jl5.commands.configureBuildPathCommand" name="Configure Build Path Command" />
 	</extension>
 	
 	<extension point="org.eclipse.ui.handlers">
       <handler
-            class="polyglot.jl5.ide.wizards.JL5ConfigureBuildPathCommandHandler"
-            commandId="polyglot.jl5.ide.commands.configureBuildPathCommand">
+            class="polyglot.ide.jl5.wizards.JL5ConfigureBuildPathCommandHandler"
+            commandId="polyglot.ide.jl5.commands.configureBuildPathCommand">
       </handler>
     </extension>
     
