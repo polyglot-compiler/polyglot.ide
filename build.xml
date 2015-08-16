@@ -10,51 +10,14 @@
     Polyglot IDE build file
   </description>
 
-  <dirname property="polyglot-ide.home" file="${ant.file.polyglot-ide}" />
-  <property file="${polyglot-ide.home}/config.properties"/>
+  <!-- Import common definitions. -->
+  <import file="${basedir}/common.xml"/>
 
   <!-- Source directory -->
   <property name="src" location="${polyglot-ide.home}/src"/>
 
   <!-- Directory for class files -->
   <property name="classes" location="${polyglot-ide.home}/classes"/>
-
-  <!--
-       Polyglot location
-
-       If polyglot.home is not defined in the properties file, try
-       ${polyglot-ide.home}/../polyglot
-  -->
-  <condition property="polyglot.home" value="${polyglot-ide.home}/../polyglot">
-    <not><isset property="polyglot.home"/></not>
-  </condition>
-
-  <!--
-       Eclipse location
-
-       If eclipse.home is not defined in the properties file, try
-       /usr/lib/eclipse.
-  -->
-  <condition property="eclipse.home" value="/usr/lib/eclipse">
-    <not><isset property="eclipse.home"/></not>
-  </condition>
-
-  <!-- Polyglot classpath -->
-  <path id="polyglot.classpath">
-    <pathelement path="${polyglot.home}/classes"/>
-    <pathelement path="${polyglot.home}/lib/polyglot.jar"/>
-    <pathelement path="${polyglot.home}/lib/ppg.jar"/>
-    <pathelement path="${polyglot.home}/lib/java_cup.jar"/>
-    <pathelement path="${polyglot.home}/lib/jflex.jar"/>
-  </path>
-
-  <!-- Eclipse plugins classpath -->
-  <!-- TODO: Handle case where JARs are installed in user's workspace. -->
-  <path id="eclipse.classpath">
-    <fileset dir="${eclipse.home}/plugins">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
 
   <!--
   ****************************************************************************
@@ -65,70 +28,14 @@
   <!-- Main configuration target. -->
   <target name="configure"
       description="Configures Polyglot IDE"
-      depends="configure-buildstring,config.properties"
-      unless="configured">
+      depends="configure-buildstring">
     <echo message="Polyglot home directory is ${polyglot.home}"/>
     <echo message="Eclipse home directory is ${eclipse.home}"/>
     <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
-
-    <!--
-    ________________________________________________________________________
-    Check configuration.
-    -->
-
-    <property file="${polyglot-ide.home}/config.properties" prefix="config"/>
-
-    <!-- Check for presence of Polyglot. -->
-    <condition property="polyglot.exists" value="true">
-      <available classname="polyglot.main.Version"
-          classpathref="polyglot.classpath"/>
-    </condition>
-
-    <!-- Error handling: Polyglot not found and polyglot.home not set. -->
-    <fail message="Failed to find Polyglot. Edit 'config.properties' and set the 'polyglot.home' property, and make sure Polyglot is built.">
-      <condition>
-        <and>
-          <isfalse value="${polyglot.exists}"/>
-          <not><isset property="config.polyglot.home"/></not>
-        </and>
-      </condition>
-    </fail>
-
-    <!-- Error handling: Polyglot not found. -->
-    <fail message="Failed to find Polyglot. Ensure the 'polyglot.home' property is correct in 'config.properties' and make sure Polyglot is built.">
-      <condition>
-        <isfalse value="${polyglot.exists}"/>
-      </condition>
-    </fail>
-
-    <!-- Check for presence of Eclipse. -->
-    <condition property="eclipse.exists" value="true">
-      <available file="${eclipse.home}/plugins" type="dir"/>
-    </condition>
-
-    <!-- Error handling: Eclipse not found and eclipse.home not set. -->
-    <fail message="Failed to find Eclipse. Edit 'config.properties' and set the 'eclipse.home' property.">
-      <condition>
-        <and>
-          <isfalse value="${eclipse.exists}"/>
-          <not><isset property="config.eclipse.home"/></not>
-        </and>
-      </condition>
-    </fail>
-
-    <!-- Error handling: Eclipse not found. -->
-    <fail message="Failed to find Eclipse. Ensure the 'eclipse.home' property is correct in 'config.properties'.">
-      <condition>
-        <isfalse value="${eclipse.exists}"/>
-      </condition>
-    </fail>
-
-    <property name="configured" value="true"/>
   </target>
 
   <!-- Configures Eclipse's .classpath file. -->
-  <target name="eclipse" depends="eclipse-check"
-      unless="eclipse.up-to-date"
+  <target name="eclipse"
       description="Configures Eclipse's .classpath file">
     <copy file="${polyglot-ide.home}/eclipse/classpath.in"
         tofile="${polyglot-ide.home}/.classpath"/>
@@ -138,12 +45,6 @@
   ____________________________________________________________________________
     Configuration helper targets.
   -->
-
-  <!-- Ensures config.properties exists. -->
-  <target name="config.properties" depends="config.properties-check"
-      unless="config.properties.exists">
-    <copy file="config.properties.in" tofile="config.properties"/>
-  </target>
 
   <target name="configure-buildstring" depends="configure-version"
       unless="polyglot-ide.version.build">
@@ -160,19 +61,6 @@
         prefix="polyglot-ide"/>
     <property name="polyglot-ide.version"
         value="${polyglot-ide.version.major}.${polyglot-ide.version.minor}.${polyglot-ide.version.patch}"/>
-  </target>
-
-  <target name="config.properties-check">
-    <condition property="config.properties.exists" value="true">
-      <resourceexists>
-        <file file="config.properties"/>
-      </resourceexists>
-    </condition>
-  </target>
-
-  <target name="eclipse-check">
-    <uptodate property="eclipse.up-to-date" targetfile=".classpath"
-        srcfile="${polyglot-ide.home}/eclipse/classpath.in"/>
   </target>
 
   <!--
