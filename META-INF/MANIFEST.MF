@@ -5,6 +5,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Polyglot JL5 IDE
 Bundle-SymbolicName: polyglot.ide.jl5;singleton:=true
 Bundle-Version: 0.1.0
+Bundle-Vendor: Polyglot project group
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Activator: polyglot.ide.jl5.JL5Plugin
 Require-Bundle: polyglot.ide;bundle-version="[0.1.0,0.2.0)";visibility
