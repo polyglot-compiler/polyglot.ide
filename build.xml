@@ -1,0 +1,179 @@
+<!--
+  This is the Apache Ant build file for Polyglot JL5 IDE.
+
+  Targets are public (i.e., intended to be callable by the user) if and only if
+  they have a description attribute.  Public targets will show up when the user
+  runs "ant -p".  Internal targets should not have description attributes!
+-->
+<project name="jl5-ide" default="compile" basedir=".">
+  <description>
+    Polyglot JL5 IDE build file
+  </description>
+
+  <!-- Import common definitions. -->
+  <import file="${basedir}/common.xml"/>
+
+  <!-- Source directory -->
+  <property name="src" location="${jl5-ide.home}/src"/>
+
+  <!-- Directory for class files -->
+  <property name="classes" location="${jl5-ide.home}/classes"/>
+
+  <!--
+  ****************************************************************************
+    Configuration targets.
+  ****************************************************************************
+  -->
+
+  <!-- Main configuration target. -->
+  <target name="configure"
+      description="Configures Polyglot JL5 IDE"
+      depends="configure-buildstring">
+    <echo message="Polyglot IDE home directory is ${polyglot-ide.home}"/>
+    <echo message="Polyglot home directory is ${polyglot.home}"/>
+    <echo message="Eclipse home directory is ${eclipse.home}"/>
+    <echo message="Polyglot IDE version is ${polyglot-ide.version}"/>
+    <echo message="JL5 IDE version is ${jl5-ide.version.build}"/>
+  </target>
+
+  <!-- Configures Eclipse's .classpath file. -->
+  <target name="eclipse"
+      description="Configures Eclipse's .classpath file">
+    <copy file="${jl5-ide.home}/eclipse/classpath.in"
+        tofile="${jl5-ide.home}/.classpath"/>
+  </target>
+
+  <!--
+  ____________________________________________________________________________
+    Configuration helper targets.
+  -->
+
+  <target name="configure-buildstring" depends="configure-version"
+      unless="jl5-ide.version.build">
+    <tstamp>
+      <format property="now" timezone="America/New_York"
+          pattern="yyyy-MM-dd HH:mm:ss z"/>
+    </tstamp>
+    <property name="jl5-ide.version.build"
+        value="${jl5-ide.version} (${now})"/>
+  </target>
+
+  <target name="configure-version" unless="jl5-ide.version">
+    <property file="${jl5-ide.home}/version.properties"
+        prefix="jl5-ide"/>
+    <property name="jl5-ide.version"
+        value="${jl5-ide.version.major}.${jl5-ide.version.minor}.${jl5-ide.version.patch}"/>
+  </target>
+
+  <!--
+  ****************************************************************************
+    Targets for cleaning up the directory tree.
+  ****************************************************************************
+  -->
+
+  <target name="clean" description="Cleans up the directory tree">
+    <delete dir="${classes}"/>
+  </target>
+
+  <target name="clobber"
+      depends="clean"
+      description="Cleans up the directory tree"/>
+
+  <!--
+  ****************************************************************************
+    Compilation targets.
+  ****************************************************************************
+  -->
+
+  <!-- Main target for compiling JL5 IDE -->
+  <target name="compile"
+      depends="init,eclipse"
+      description="Compile the plugin">
+    <javac source="1.7"
+        target="1.7"
+        debug="on"
+        srcdir="${src}"
+        destdir="${classes}"
+        includeAntRuntime="false">
+      <include name="**/*.java"/>
+      <sourcepath path="${src}"/>
+      <classpath>
+        <path refid="polyglot-ide.classpath"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!--
+  ____________________________________________________________________________
+    Compilation helper targets.
+  -->
+
+  <!-- Initializes the build -->
+  <target name="init" depends="configure">
+    <!-- Create the time stamp -->
+    <tstamp/>
+
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${classes}"/>
+  </target>
+
+  <!--
+  ****************************************************************************
+    Version-management targets
+  ****************************************************************************
+  -->
+
+  <target name="bump-version">
+    <antcall target="bump-patch"/>
+  </target>
+
+  <target name="bump-major">
+    <propertyfile file="${jl5-ide.home}/version.properties">
+      <entry key="version.major" type="int" operation="+" value="1"
+          pattern="0"/>
+      <entry key="version.minor" type="int" value="0"/>
+      <entry key="version.patch" type="int" value="0"/>
+    </propertyfile>
+
+    <!-- Regenerate version files -->
+    <antcall target="gen-version"/>
+  </target>
+
+  <target name="bump-minor">
+    <propertyfile file="${jl5-ide.home}/version.properties">
+      <entry key="version.minor" type="int" operation="+" value="1"
+          pattern="0"/>
+      <entry key="version.patch" type="int" value="0"/>
+    </propertyfile>
+
+    <!-- Regenerate version files -->
+    <antcall target="configure-buildstring" />
+    <antcall target="gen-version"/>
+  </target>
+
+  <target name="bump-patch">
+    <propertyfile file="${jl5-ide.home}/version.properties">
+      <entry key="version.patch" type="int" operation="+" value="1"
+          pattern="0"/>
+    </propertyfile>
+
+    <!-- Regenerate version files -->
+    <antcall target="gen-version"/>
+  </target>
+
+  <!--
+  ____________________________________________________________________________
+    Version-management helper targets.
+  -->
+
+  <!-- Generates version files in the source tree. -->
+  <target name="gen-version" depends="configure-buildstring">
+    <manifest file="${jl5-ide.home}/META-INF/MANIFEST.MF" mode="update">
+      <attribute name="Bundle-Version"
+          value="${jl5-ide.version.major}.${jl5-ide.version.minor}.${jl5-ide.version.patch}"/>
+    </manifest>
+  </target>
+</project>
+<!--
+vim: ts=2 sw=2 ai et
+-->
