@@ -46,21 +46,13 @@
     Configuration helper targets.
   -->
 
-  <target name="configure-buildstring" depends="configure-version"
-      unless="polyglot-ide.version.build">
+  <target name="configure-buildstring" unless="polyglot-ide.version.build">
     <tstamp>
       <format property="now" timezone="America/New_York"
           pattern="yyyy-MM-dd HH:mm:ss z"/>
     </tstamp>
     <property name="polyglot-ide.version.build"
         value="${polyglot-ide.version} (${now})"/>
-  </target>
-
-  <target name="configure-version" unless="polyglot-ide.version">
-    <property file="${polyglot-ide.home}/version.properties"
-        prefix="polyglot-ide"/>
-    <property name="polyglot-ide.version"
-        value="${polyglot-ide.version.major}.${polyglot-ide.version.minor}.${polyglot-ide.version.patch}"/>
   </target>
 
   <!--
@@ -146,7 +138,6 @@
     </propertyfile>
 
     <!-- Regenerate version files -->
-    <antcall target="configure-buildstring" />
     <antcall target="gen-version"/>
   </target>
 

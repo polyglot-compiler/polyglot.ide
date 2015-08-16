@@ -16,6 +16,12 @@
   <!-- Import common definitions. -->
   <property file="${polyglot-ide.home}/config.properties" prefix="config"/>
 
+  <!-- Read in version information. -->
+  <property file="${polyglot-ide.home}/version.properties"
+      prefix="polyglot-ide"/>
+  <property name="polyglot-ide.version"
+      value="${polyglot-ide.version.major}.${polyglot-ide.version.minor}.${polyglot-ide.version.patch}"/>
+
   <!--
        Polyglot location
 
