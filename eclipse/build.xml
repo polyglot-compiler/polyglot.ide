@@ -45,7 +45,7 @@
                 filtering="true"/>
 
         <!-- Jar into the features directory. -->
-        <jar destfile="${features}/polyglot.ide_${plugin.version}.jar"
+        <jar destfile="${features}/polyglot.ide.jl5_${plugin.version}.jar"
                 basedir="${tmp}"
                 includes="feature.xml"/>
     </target>
