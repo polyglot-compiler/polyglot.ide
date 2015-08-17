@@ -48,21 +48,13 @@
     Configuration helper targets.
   -->
 
-  <target name="configure-buildstring" depends="configure-version"
-      unless="jl5-ide.version.build">
+  <target name="configure-buildstring" unless="jl5-ide.version.build">
     <tstamp>
       <format property="now" timezone="America/New_York"
           pattern="yyyy-MM-dd HH:mm:ss z"/>
     </tstamp>
     <property name="jl5-ide.version.build"
         value="${jl5-ide.version} (${now})"/>
-  </target>
-
-  <target name="configure-version" unless="jl5-ide.version">
-    <property file="${jl5-ide.home}/version.properties"
-        prefix="jl5-ide"/>
-    <property name="jl5-ide.version"
-        value="${jl5-ide.version.major}.${jl5-ide.version.minor}.${jl5-ide.version.patch}"/>
   </target>
 
   <!--

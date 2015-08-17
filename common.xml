@@ -16,6 +16,12 @@
   <!-- Import common definitions. -->
   <property file="${jl5-ide.home}/config.properties" prefix="config"/>
 
+  <!-- Read in version information. -->
+  <property file="${jl5-ide.home}/version.properties"
+      prefix="jl5-ide"/>
+  <property name="jl5-ide.version"
+      value="${jl5-ide.version.major}.${jl5-ide.version.minor}.${jl5-ide.version.patch}"/>
+
   <!--
        Polyglot IDE location
 
@@ -30,6 +36,12 @@
 
   <!-- Import Polyglot IDE common definitions. -->
   <import file="${polyglot-ide.home}/common.xml" optional="true"/>
+
+  <!-- JL5 IDE classpath (includes dependencies) -->
+  <path id="jl5-ide.classpath">
+    <pathelement path="${jl5-ide.home}/classes"/>
+    <path refid="polyglot-ide.classpath"/>
+  </path>
 
   <!--
   ________________________________________________________________________
