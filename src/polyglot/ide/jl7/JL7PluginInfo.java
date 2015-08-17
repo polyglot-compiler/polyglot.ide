@@ -1,8 +1,8 @@
-package polyglot.jl7.ide;
+package polyglot.ide.jl7;
 
 import polyglot.ext.jl7.JL7ExtensionInfo;
 import polyglot.frontend.ExtensionInfo;
-import polyglot.jl5.ide.JL5PluginInfo;
+import polyglot.ide.jl5.JL5PluginInfo;
 
 public class JL7PluginInfo extends JL5PluginInfo {
 
@@ -11,7 +11,7 @@ public class JL7PluginInfo extends JL5PluginInfo {
 
   @Override
   public String pluginID() {
-    return "polyglot.jl7.ide";
+    return "polyglot.ide.jl7";
   }
 
   @Override
@@ -31,12 +31,12 @@ public class JL7PluginInfo extends JL5PluginInfo {
 
   @Override
   public String natureID() {
-    return "polyglot.jl7.ide.jl7nature";
+    return "polyglot.ide.jl7.jl7nature";
   }
 
   @Override
   public String builderId() {
-    return "polyglot.jl7.ide.jl7Builder";
+    return "polyglot.ide.jl7.jl7Builder";
   }
 
 }
