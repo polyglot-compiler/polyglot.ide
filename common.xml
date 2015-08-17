@@ -1,0 +1,81 @@
+<!-- Common definitions. (Can be externally sourced by extensions.) -->
+
+<project name="jl7-ide.common">
+  <dirname property="jl7-ide.home" file="${ant.file.jl7-ide.common}"/>
+
+  <!-- Ensure config.properties exists. -->
+  <copy todir="${jl7-ide.home}">
+    <fileset file="${jl7-ide.home}/config.properties.in">
+      <present targetdir="${jl7-ide.home}" present="srconly">
+        <mapper type="glob" from="*.in" to="*"/>
+      </present>
+    </fileset>
+    <mapper type="glob" from="*.in" to="*"/>
+  </copy>
+
+  <!-- Import common definitions. -->
+  <property file="${jl7-ide.home}/config.properties" prefix="config"/>
+
+  <!-- Read in version information. -->
+  <property file="${jl7-ide.home}/version.properties"
+      prefix="jl7-ide"/>
+  <property name="jl7-ide.version"
+      value="${jl7-ide.version.major}.${jl7-ide.version.minor}.${jl7-ide.version.patch}"/>
+
+  <!--
+       JL5 IDE location
+
+       If jl5-ide.home is not defined in the properties file, default
+       to ${jl7-ide.home}/../polyglot.ide.jl5
+  -->
+  <condition property="jl5-ide.home"
+      value="${config.jl5-ide.home}"
+      else="${jl7-ide.home}/../polyglot.ide.jl5">
+    <isset property="config.jl5-ide.home"/>
+  </condition>
+
+  <!-- Import JL5 IDE common definitions. -->
+  <import file="${jl5-ide.home}/common.xml" optional="true"/>
+
+  <!-- JL7 IDE classpath (includes dependencies) -->
+  <path id="jl7-ide.classpath">
+    <pathelement path="${jl7-ide.home}/classes"/>
+    <path refid="jl5-ide.classpath"/>
+  </path>
+
+  <!--
+  ________________________________________________________________________
+  Check configuration.
+  -->
+
+  <echo message="JL5 IDE home directory is ${jl5-ide.home}"/>
+
+  <!-- Check for presence of JL5 IDE. -->
+  <condition property="jl5-ide.exists" value="true">
+    <and>
+      <isreference refid="jl5-ide.classpath"/>
+      <available classname="polyglot.ide.jl5.JL5PluginInfo"
+          classpathref="jl5-ide.classpath"/>
+    </and>
+  </condition>
+
+  <!--
+       Error handling: JL5 IDE not found and jl5-ide.home not set in
+       config.properties.
+  -->
+  <fail message="Failed to find JL5 IDE. Set the 'jl5-ide.home' property in ${jl7-ide.home}/config.properties, and make sure JL5 IDE is built.">
+    <condition>
+      <and>
+        <isfalse value="${jl5-ide.exists}"/>
+        <not><isset property="config.jl5-ide.home"/></not>
+      </and>
+    </condition>
+  </fail>
+
+  <!-- Error handling: JL5 IDE not found. -->
+  <fail message="Failed to find JL5 IDE. Ensure the 'jl5-ide.home' property is correct in '${jl7-ide.home}/config.properties' and make sure JL5 IDE is built.">
+    <condition>
+      <isfalse value="${jl5-ide.exists}"/>
+    </condition>
+  </fail>
+</project>

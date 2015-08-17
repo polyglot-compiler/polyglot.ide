@@ -1,12 +1,16 @@
 Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.6
+Created-By: 1.8.0_51-b16 (Oracle Corporation)
 Bundle-ManifestVersion: 2
 Bundle-Name: Polyglot JL7 IDE
 Bundle-SymbolicName: polyglot.ide.jl7;singleton:=true
 Bundle-Version: 0.1.0
+Bundle-Vendor: Polyglot project group
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Activator: polyglot.ide.jl7.JL7Plugin
-Require-Bundle: polyglot.ide.jl5;bundle-version="[0.1.0,0.2.0)";visibility:=reexport
+Require-Bundle: polyglot.ide.jl5;bundle-version="[0.1.0,0.2.0)";visibi
+ lity:=reexport
 Bundle-ActivationPolicy: lazy
-Export-Package: polyglot.ide.jl7,
- polyglot.ide.jl7.editors,
- polyglot.ide.jl7.wizards
+Export-Package: polyglot.ide.jl7,polyglot.ide.jl7.editors,polyglot.ide
+ .jl7.wizards
+
