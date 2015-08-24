@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.ui.editors">
+		<editor
+				name="Polyglot JL7 Editor"
+				extensions="jl7"
+				class="polyglot.ide.jl7.editors.JL7Editor"
+				id="polyglot.ide.jl7.editors.Editor"
+		/>
+	</extension>
+	
+	<extension
+			point="org.eclipse.core.resources.natures"
+			id="polyglot.ide.jl7.jl7nature"
+			name="JL7 Nature">
+		<runtime>
+			<run class="polyglot.ide.jl7.JL7Nature"/>
+		</runtime>
+		<builder id="polyglot.ide.jl7.jl7Builder" />
+	</extension>
+	
+	<extension
+			point="org.eclipse.ui.newWizards">
+		<category
+				id="polyglot.ide.category.wizards"
+				name="JL7"/>
+		<wizard
+				category="polyglot.ide.category.wizards"
+				class="polyglot.ide.jl7.wizards.JL7NewProjectWizard"
+				id="polyglot.ide.jl7.wizards.new.jl7project"
+				name="JL7 Project"
+				project="true"
+				icon="/images/polyglot-logo.png"/>
+	</extension>	
+	
+	<extension
+      id="jl7Builder" name="JL7 Project Builder" point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="polyglot.ide.jl7.JL7ProjectBuilder">
+         </run>
+      </builder>
+   </extension>
+   
+  	<extension point="org.eclipse.ui.menus">
+  		<menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=export">
+     		<menu id="buildPathMenu" label="Build Path">
+     		<command
+           		commandId="polyglot.ide.jl7.commands.configureBuildPathCommand"
+           		label="Configure Build Path..."
+           		style="push">
+           		
+           		<visibleWhen>
+					<iterate operator="and">
+					<test property="org.eclipse.core.resources.projectNature"
+					value="polyglot.ide.jl7.jl7nature">
+					</test>
+					</iterate>
+				</visibleWhen> 
+           		
+     		</command>
+     		</menu>
+  		</menuContribution>
+	</extension>
+	
+	<extension point="org.eclipse.ui.commands">
+		<command id="polyglot.ide.jl7.commands.configureBuildPathCommand" name="Configure Build Path Command" />
+	</extension>
+	
+	<extension point="org.eclipse.ui.handlers">
+      <handler
+            class="polyglot.ide.jl7.wizards.JL7ConfigureBuildPathCommandHandler"
+            commandId="polyglot.ide.jl7.commands.configureBuildPathCommand">
+      </handler>
+    </extension>
+    
+</plugin>

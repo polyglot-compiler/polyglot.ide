@@ -1,0 +1,4 @@
+.*.sw?
+/.classpath
+/classes/
+/config.properties
