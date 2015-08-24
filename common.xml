@@ -100,7 +100,7 @@
     <include name="CHANGES"/>
     <include name="COPYING.in"/>
     <include name="LICENSE.LGPL"/>
-    <include name="README"/>
+    <include name="README.in"/>
   </fileset>
 
   <!--
