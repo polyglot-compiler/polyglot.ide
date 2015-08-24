@@ -43,13 +43,20 @@
   -->
 
   <target name="clean" description="Cleans up the directory tree">
+    <delete dir="${tmp}"/>
+
     <!-- Recursively call "clean" on subdirectories. -->
     <subant target="clean">
       <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
     </subant>
   </target>
 
-  <target name="clobber" description="Cleans up the directory tree">
+  <target name="clobber"
+      depends="clean"
+      description="Cleans up the directory tree">
+    <delete dir="${features}"/>
+    <delete dir="${plugins}"/>
+
     <!-- Recursively call "clobber" on subdirectories. -->
     <subant target="clobber">
       <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
@@ -66,6 +73,15 @@
   <target name="compile" description="Compile the plugins">
     <!-- Recursively call "compile" on subdirectories. -->
     <subant target="compile" inheritall="true" inheritrefs="true">
+      <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
+    </subant>
+  </target>
+
+  <!-- Target for building JARs for the update site -->
+  <target name="dist-jars"
+      description="Builds JARs for the Eclipse update site">
+    <!-- Recursively call "dist-jars" on subdirectories. -->
+    <subant target="dist-jars" inheritall="true" inheritrefs="true">
       <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
     </subant>
   </target>

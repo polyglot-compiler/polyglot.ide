@@ -82,6 +82,18 @@
     <path refid="jl5-ide.classpath"/>
   </path>
 
+  <!-- Directory for emitting features JARs for the Eclipse update site -->
+  <property name="features"
+      location="${polyglot-ide.home}/eclipse/features"/>
+
+  <!-- Directory for emitting plugins JARs for the Eclipse update site -->
+  <property name="plugins"
+      location="${polyglot-ide.home}/eclipse/plugins"/>
+
+  <!-- Scratch for building JARs for the Eclipse update site -->
+  <property name="tmp"
+      location="${polyglot-ide.home}/tmp"/>
+
   <!--
   ________________________________________________________________________
   Check configuration.
@@ -148,7 +160,27 @@
   </tstamp>
   <property name="polyglot-ide.version.build"
       value="${polyglot-ide.version} (${now})"/>
-    <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
+  <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
+
+  <tstamp>
+    <format property="timestamp" pattern="yyyyMMddHHmm" timezone="UTC"/>
+  </tstamp>
+  <tstamp>
+    <format property="year" pattern="yyyy" timezone="UTC"/>
+  </tstamp>
+  <property name="plugin.version" value="${polyglot-ide.version}.${timestamp}"/>
+
+  <!-- Utility targets -->
+  <target name="mkdir-tmp">
+    <clear-tmp/>
+  </target>
+
+  <macrodef name="clear-tmp">
+    <sequential>
+      <delete dir="${tmp}"/>
+      <mkdir dir="${tmp}"/>
+    </sequential>
+  </macrodef>
 </project>
 <!--
 vim: ts=2 sw=2 ai et

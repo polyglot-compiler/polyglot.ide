@@ -82,6 +82,58 @@
     </javac>
   </target>
 
+  <!-- Target for building JARs for the update site -->
+  <target name="dist-jars"
+      depends="compile,mkdir-tmp"
+      description="Builds JARs for the Eclipse update site">
+    <!-- First, build the features JAR. -->
+    <!-- Copy feature.xml to the temp directory. -->
+    <copy tofile="${tmp}/feature.xml"
+        file="${polyglot-ide-base.home}/eclipse/feature.xml.in">
+      <filterset>
+        <filter token="version" value="${plugin.version}"/>
+        <filter token="year" value="${year}"/>
+      </filterset>
+    </copy>
+
+    <!-- Jar into the features directory. -->
+    <jar destfile="${features}/polyglot.ide_${plugin.version}.jar"
+        basedir="${tmp}"
+        includes="feature.xml"/>
+
+    <!-- Next, build the plugins JAR. -->
+    <!-- Make ${tmp} pristine. We will build the plugin image there. -->
+    <clear-tmp/>
+
+    <!-- Copy and update manifest. -->
+    <copy tofile="${tmp}/META-INF/MANIFEST.MF"
+        file="${polyglot-ide-base.home}/META-INF/MANIFEST.MF"/>
+    <manifest file="${tmp}/META-INF/MANIFEST.MF" mode="update">
+      <attribute name="Bundle-Version" value="${plugin.version}"/>
+      <attribute name="Built-By" value="${user.name}"/>
+      <attribute name="Implementation-Version" value="${plugin.version}"/>
+      <attribute name="Built-Date" value="${now}"/>
+    </manifest>
+
+    <!-- Copy source files. -->
+    <copy todir="${tmp}/src" includeEmptyDirs="false">
+      <fileset dir="${src}"/>
+    </copy>
+
+    <!-- Copy class and image files and plugin.xml. -->
+    <copy todir="${tmp}" includeEmptyDirs="false">
+      <fileset dir="${classes}"/>
+      <fileset dir="${polyglot-ide.home}">
+        <include name="images/**"/>
+        <include name="plugin.xml"/>
+      </fileset>
+    </copy>
+
+    <jar destfile="${plugins}/polyglot.ide_${plugin.version}.jar"
+        basedir="${tmp}"
+        manifest="${tmp}/META-INF/MANIFEST.MF"/>
+  </target>
+
   <!--
   ____________________________________________________________________________
     Compilation helper targets.
