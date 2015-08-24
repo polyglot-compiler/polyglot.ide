@@ -1,23 +1,26 @@
 <!--
-  This is the Apache Ant build file for Polyglot IDE.
+  This is the Apache Ant build file for the base Polyglot IDE project.
 
   Targets are public (i.e., intended to be callable by the user) if and only if
   they have a description attribute.  Public targets will show up when the user
   runs "ant -p".  Internal targets should not have description attributes!
 -->
-<project name="polyglot-ide" default="compile" basedir=".">
+<project name="polyglot-ide-base" default="compile" basedir=".">
   <description>
-    Polyglot IDE build file
+    Polyglot IDE base project build file
   </description>
 
+  <dirname property="polyglot-ide-base.home"
+      file="${ant.file.polyglot-ide-base}"/>
+
   <!-- Import common definitions. -->
-  <import file="${basedir}/common.xml"/>
+  <import file="${polyglot-ide-base.home}/../common.xml"/>
 
   <!-- Source directory -->
-  <property name="src" location="${polyglot-ide.home}/src"/>
+  <property name="src" location="${polyglot-ide-base.home}/src"/>
 
   <!-- Directory for class files -->
-  <property name="classes" location="${polyglot-ide.home}/classes"/>
+  <property name="classes" location="${polyglot-ide-base.home}/classes"/>
 
   <!--
   ****************************************************************************
@@ -27,8 +30,7 @@
 
   <!-- Main configuration target. -->
   <target name="configure"
-      description="Configures Polyglot IDE"
-      depends="configure-buildstring">
+      description="Configures Polyglot IDE">
     <echo message="Polyglot home directory is ${polyglot.home}"/>
     <echo message="Eclipse home directory is ${eclipse.home}"/>
     <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
@@ -37,22 +39,8 @@
   <!-- Configures Eclipse's .classpath file. -->
   <target name="eclipse"
       description="Configures Eclipse's .classpath file">
-    <copy file="${polyglot-ide.home}/eclipse/classpath.in"
-        tofile="${polyglot-ide.home}/.classpath"/>
-  </target>
-
-  <!--
-  ____________________________________________________________________________
-    Configuration helper targets.
-  -->
-
-  <target name="configure-buildstring" unless="polyglot-ide.version.build">
-    <tstamp>
-      <format property="now" timezone="America/New_York"
-          pattern="yyyy-MM-dd HH:mm:ss z"/>
-    </tstamp>
-    <property name="polyglot-ide.version.build"
-        value="${polyglot-ide.version} (${now})"/>
+    <copy file="${polyglot-ide-base.home}/eclipse/classpath.in"
+        tofile="${polyglot-ide-base.home}/.classpath"/>
   </target>
 
   <!--
@@ -101,9 +89,6 @@
 
   <!-- Initializes the build -->
   <target name="init" depends="configure">
-    <!-- Create the time stamp -->
-    <tstamp/>
-
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${classes}"/>
   </target>
@@ -114,51 +99,10 @@
   ****************************************************************************
   -->
 
-  <target name="bump-version">
-    <antcall target="bump-patch"/>
-  </target>
-
-  <target name="bump-major">
-    <propertyfile file="${polyglot-ide.home}/version.properties">
-      <entry key="version.major" type="int" operation="+" value="1"
-          pattern="0"/>
-      <entry key="version.minor" type="int" value="0"/>
-      <entry key="version.patch" type="int" value="0"/>
-    </propertyfile>
-
-    <!-- Regenerate version files -->
-    <antcall target="gen-version"/>
-  </target>
-
-  <target name="bump-minor">
-    <propertyfile file="${polyglot-ide.home}/version.properties">
-      <entry key="version.minor" type="int" operation="+" value="1"
-          pattern="0"/>
-      <entry key="version.patch" type="int" value="0"/>
-    </propertyfile>
-
-    <!-- Regenerate version files -->
-    <antcall target="gen-version"/>
-  </target>
-
-  <target name="bump-patch">
-    <propertyfile file="${polyglot-ide.home}/version.properties">
-      <entry key="version.patch" type="int" operation="+" value="1"
-          pattern="0"/>
-    </propertyfile>
-
-    <!-- Regenerate version files -->
-    <antcall target="gen-version"/>
-  </target>
-
-  <!--
-  ____________________________________________________________________________
-    Version-management helper targets.
-  -->
-
   <!-- Generates version files in the source tree. -->
-  <target name="gen-version" depends="configure-buildstring">
-    <manifest file="${polyglot-ide.home}/META-INF/MANIFEST.MF" mode="update">
+  <target name="gen-version">
+    <manifest file="${polyglot-ide-base.home}/META-INF/MANIFEST.MF"
+        mode="update">
       <attribute name="Bundle-Version"
           value="${polyglot-ide.version.major}.${polyglot-ide.version.minor}.${polyglot-ide.version.patch}"/>
     </manifest>

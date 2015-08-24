@@ -1,4 +1,4 @@
-<!-- Common definitions. (Externally sourced by JL5 IDE.) -->
+<!-- Common definitions. -->
 
 <project name="polyglot-ide.common">
   <dirname property="polyglot-ide.home" file="${ant.file.polyglot-ide.common}"/>
@@ -65,9 +65,21 @@
 
   <!-- Polyglot IDE classpath (includes dependencies) -->
   <path id="polyglot-ide.classpath">
-    <pathelement path="${polyglot-ide.home}/classes"/>
+    <pathelement path="${polyglot-ide.home}/base/classes"/>
     <path refid="polyglot.classpath"/>
     <path refid="eclipse.classpath"/>
+  </path>
+
+  <!-- JL5 IDE classpath (includes dependencies) -->
+  <path id="jl5-ide.classpath">
+    <pathelement path="${polyglot-ide.home}/jl5/classes"/>
+    <path refid="polyglot-ide.classpath"/>
+  </path>
+
+  <!-- JL7 IDE classpath (includes dependencies) -->
+  <path id="jl7-ide.classpath">
+    <pathelement path="${polyglot-ide.home}/jl7/classes"/>
+    <path refid="jl5-ide.classpath"/>
   </path>
 
   <!--
@@ -128,6 +140,15 @@
       <isfalse value="${eclipse.exists}"/>
     </condition>
   </fail>
+
+  <!-- Configure build string. -->
+  <tstamp>
+    <format property="now" timezone="America/New_York"
+        pattern="yyyy-MM-dd HH:mm:ss z"/>
+  </tstamp>
+  <property name="polyglot-ide.version.build"
+      value="${polyglot-ide.version} (${now})"/>
+    <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
 </project>
 <!--
 vim: ts=2 sw=2 ai et

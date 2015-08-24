@@ -1,0 +1,131 @@
+<!--
+  This is the top-level Apache Ant build file for Polyglot IDE.
+
+  Targets are public (i.e., intended to be callable by the user) if and only if
+  they have a description attribute.  Public targets will show up when the user
+  runs "ant -p".  Internal targets should not have description attributes!
+-->
+<project name="polyglot-ide" default="compile" basedir=".">
+  <description>
+    Polyglot IDE top-level build file
+  </description>
+
+  <!-- Import common definitions. -->
+  <import file="${basedir}/common.xml"/>
+
+  <!--
+  ****************************************************************************
+    Configuration targets.
+  ****************************************************************************
+  -->
+
+  <!-- Main configuration target. -->
+  <target name="configure"
+      description="Configures Polyglot IDE">
+    <echo message="Polyglot home directory is ${polyglot.home}"/>
+    <echo message="Eclipse home directory is ${eclipse.home}"/>
+    <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
+  </target>
+
+  <!-- Configures Eclipse's .classpath file. -->
+  <target name="eclipse"
+      description="Configures Eclipse's .classpath file">
+    <!-- Recursively call "eclipse" on subdirectories. -->
+    <subant target="eclipse">
+      <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
+    </subant>
+  </target>
+
+  <!--
+  ****************************************************************************
+    Targets for cleaning up the directory tree.
+  ****************************************************************************
+  -->
+
+  <target name="clean" description="Cleans up the directory tree">
+    <!-- Recursively call "clean" on subdirectories. -->
+    <subant target="clean">
+      <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
+    </subant>
+  </target>
+
+  <target name="clobber" description="Cleans up the directory tree">
+    <!-- Recursively call "clobber" on subdirectories. -->
+    <subant target="clobber">
+      <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
+    </subant>
+  </target>
+
+  <!--
+  ****************************************************************************
+    Compilation targets.
+  ****************************************************************************
+  -->
+
+  <!-- Main target for compiling Polyglot IDE -->
+  <target name="compile" description="Compile the plugins">
+    <!-- Recursively call "compile" on subdirectories. -->
+    <subant target="compile" inheritall="true" inheritrefs="true">
+      <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
+    </subant>
+  </target>
+
+  <!--
+  ****************************************************************************
+    Version-management targets
+  ****************************************************************************
+  -->
+
+  <target name="bump-version">
+    <antcall target="bump-patch"/>
+  </target>
+
+  <target name="bump-major">
+    <propertyfile file="${polyglot-ide.home}/version.properties">
+      <entry key="version.major" type="int" operation="+" value="1"
+          pattern="0"/>
+      <entry key="version.minor" type="int" value="0"/>
+      <entry key="version.patch" type="int" value="0"/>
+    </propertyfile>
+
+    <!-- Regenerate version files -->
+    <antcall target="gen-version" inheritAll="false"/>
+  </target>
+
+  <target name="bump-minor">
+    <propertyfile file="${polyglot-ide.home}/version.properties">
+      <entry key="version.minor" type="int" operation="+" value="1"
+          pattern="0"/>
+      <entry key="version.patch" type="int" value="0"/>
+    </propertyfile>
+
+    <!-- Regenerate version files -->
+    <antcall target="gen-version" inheritAll="false"/>
+  </target>
+
+  <target name="bump-patch">
+    <propertyfile file="${polyglot-ide.home}/version.properties">
+      <entry key="version.patch" type="int" operation="+" value="1"
+          pattern="0"/>
+    </propertyfile>
+
+    <!-- Regenerate version files -->
+    <antcall target="gen-version" inheritAll="false"/>
+  </target>
+
+  <!--
+  ____________________________________________________________________________
+    Version-management helper targets.
+  -->
+
+  <!-- Generates version files in the source tree. -->
+  <target name="gen-version">
+    <!-- Recursively call "gen-version" on subdirectories. -->
+    <subant target="gen-version" inheritall="true" inheritrefs="true">
+      <fileset dir="${polyglot-ide.home}" includes="*/build.xml"/>
+    </subant>
+  </target>
+</project>
+<!--
+vim: ts=2 sw=2 ai et
+-->
