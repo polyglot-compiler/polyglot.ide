@@ -94,6 +94,15 @@
   <property name="tmp"
       location="${polyglot-ide.home}/tmp"/>
 
+  <!-- File set to be shipped with all plugins -->
+  <fileset id="common-dist"
+      dir="${polyglot-ide.home}">
+    <include name="CHANGES"/>
+    <include name="COPYING.in"/>
+    <include name="LICENSE.LGPL"/>
+    <include name="README"/>
+  </fileset>
+
   <!--
   ________________________________________________________________________
   Check configuration.

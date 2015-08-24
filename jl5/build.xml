@@ -133,6 +133,19 @@
       </fileset>
     </copy>
 
+    <!-- Copy common dist files. -->
+    <copy todir="${tmp}" includeEmptyDirs="false">
+      <fileset refid="common-dist"/>
+      <firstmatchmapper>
+        <mapper type="glob" from="*.in" to="*"/>
+        <mapper type="identity"/>
+      </firstmatchmapper>
+      <filterset>
+        <filter token="VERSION" value="${polyglot-ide.version}"/>
+        <filter token="YEAR" value="${year}"/>
+      </filterset>
+    </copy>
+
     <jar destfile="${plugins}/polyglot.ide.jl5_${plugin.version}.jar"
         basedir="${tmp}"
         manifest="${tmp}/META-INF/MANIFEST.MF"/>

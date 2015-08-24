@@ -1,0 +1,8 @@
+Polylgot IDE Version History
+============================
+
+Polyglot IDE 0.1.0 (Aug 2015)
+------------------
+Initial release. Support for code editing and highlighting, compilation, and
+integrated error reporting. Some navigation support and an extensible
+project-creation wizard.
