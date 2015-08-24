@@ -1,0 +1,8 @@
+# Configuration properties for Polyglot JL5 IDE.
+
+
+# Polyglot IDE source directory
+#
+# This is optional. Defaults to "${jl5-ide.home}/../polyglot.ide".
+
+#polyglot-ide.home=${jl5-ide.home}/../polyglot.ide
