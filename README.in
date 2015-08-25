@@ -10,8 +10,8 @@ framework for Polyglot compiler extensions.
 Contents
 --------
 
-The code for Polyglot IDE is freely available on GitHub. To
-obtain a copy, clone the following URL:
+The code for Polyglot IDE is freely available on GitHub. To obtain
+a copy, clone the following URL:
 
   https://github.com/polyglot-compiler/polyglot.ide.git
 
@@ -23,9 +23,43 @@ The source repository contains the following sub-directories:
   - jl5/src: the source code for the JL5 IDE sub-project, which
              extends the base IDE with support for Polyglot's JL5
              extension
+
   - jl7/src: the source code for the JL7 IDE sub-project, which
              extends the JL5 IDE with support for Polyglot's JL7
              extension
+
+Disclaimer
+----------
+
+Polyglot IDE is research software. Over time, some of the
+interfaces in the framework may change. This may require some
+extensions to be changed to conform to the new interfaces. Also,
+Polyglot IDE is not well-documented; in particular, some of the
+Javadoc may be missing or out-of-date. We are working on writing
+on writing better documentation. For future updates, watch:
+
+        https://www.cs.cornell.edu/projects/polyglot/ide/
+
+If you use Polyglot IDE, we would appreciate your letting us know.
+Send comments and bug reports to:
+
+                polyglot-developers-L@cornell.edu
+
+Build requirements
+------------------
+
+Polyglot IDE builds on Linux. It likely builds on other platforms,
+but this is untested.
+
+We recommend that you use JDK 7 or later. You will experience
+problems with older versions of the JDK.
+
+Polyglot IDE requires Eclipse 3.8 (Juno) or later. Older versions
+of Eclipse may work, but this is untested.
+
+The "Getting started" section below suggests that you build
+against the development version of Polyglot, which requires the
+Apache Ant build tool (https://ant.apache.org).
 
 Getting started in Eclipse
 --------------------------
@@ -53,8 +87,8 @@ Getting started in Eclipse
 
              File > New > Java Project
 
-        b) In the dialog, enter the project name "Polyglot" and click
-           "Finish".
+        b) In the dialog, enter the project name "Polyglot" and
+           click "Finish".
 
 II. Clone Polyglot IDE and add its sub-projects to your Eclipse
     workbench.
@@ -67,13 +101,14 @@ II. Clone Polyglot IDE and add its sub-projects to your Eclipse
 
     2. The three top-level directories (base, jl5, and jl7) each
        contain a separate Eclipse project for the respective
-       plug-in. Before adding these projects to Eclipse,
-       configure the Eclipse .classpath files for these projects.
-       
+       plug-in. Before adding these projects to Eclipse, configure
+       the Eclipse .classpath files for these projects.
+
          $ cd polyglot.ide
          $ ant eclipse
 
-    3. In Eclipse, add the base Polyglot IDE project to your workbench.
+    3. In Eclipse, add the base Polyglot IDE project to your
+       workbench.
 
         a) Invoke the New Java Project dialog:
 
@@ -94,3 +129,9 @@ II. Clone Polyglot IDE and add its sub-projects to your Eclipse
 
         Project name: polyglot.ide.jl7
             Location: $WORKSPACE/polyglot.ide/jl7
+
+Credits and acknowledgements
+----------------------------
+
+The Polyglot IDE was developed by Karthik Bellur and Jed Liu at
+Cornell University.
