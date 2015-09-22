@@ -4,7 +4,7 @@ Created-By: 1.8.0_51-b16 (Oracle Corporation)
 Bundle-ManifestVersion: 2
 Bundle-Name: Polyglot IDE
 Bundle-SymbolicName: polyglot.ide;singleton:=true
-Bundle-Version: 0.1.0
+Bundle-Version: 0.1.1
 Bundle-Vendor: Polyglot project group
 Bundle-Activator: polyglot.ide.JLPlugin
 Require-Bundle: org.eclipse.ui;visibility:=reexport,org.eclipse.core.r

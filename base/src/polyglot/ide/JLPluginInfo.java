@@ -126,7 +126,13 @@ public class JLPluginInfo implements PluginInfo {
    * @return a path to a file in the plug-in directory.
    */
   protected String getPluginPath(String filename) {
-    Bundle bundle = Platform.getBundle(pluginID());
+    return getPluginPath(Platform.getBundle(pluginID()), filename);
+  }
+
+  /**
+   * @return a path to a file in the directory of the given plug-in/bundle.
+   */
+  protected String getPluginPath(Bundle bundle, String filename) {
     URL url = FileLocator.find(bundle, new Path(filename), null);
 
     if (url != null) {

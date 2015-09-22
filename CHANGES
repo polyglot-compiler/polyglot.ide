@@ -1,6 +1,13 @@
 Polylgot IDE Version History
 ============================
 
+Polyglot IDE 0.1.1 (Sep 2015)
+------------------
+Extended the API slightly to support the Jif IDE.
+  - Added JLPluginInfo.getPluginPath(Bundle, String) to support looking up file
+    paths in other plug-ins.
+
+
 Polyglot IDE 0.1.0 (Aug 2015)
 ------------------
 Initial release. Support for code editing and highlighting, compilation, and

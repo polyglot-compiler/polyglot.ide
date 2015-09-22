@@ -4,7 +4,7 @@ Created-By: 1.8.0_51-b16 (Oracle Corporation)
 Bundle-ManifestVersion: 2
 Bundle-Name: Polyglot JL7 IDE
 Bundle-SymbolicName: polyglot.ide.jl7;singleton:=true
-Bundle-Version: 0.1.0
+Bundle-Version: 0.1.1
 Bundle-Vendor: Polyglot project group
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Activator: polyglot.ide.jl7.JL7Plugin
