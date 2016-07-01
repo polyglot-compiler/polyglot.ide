@@ -123,7 +123,7 @@
     <!-- Copy class and image files and plugin.xml. -->
     <copy todir="${tmp}" includeEmptyDirs="false">
       <fileset dir="${classes}"/>
-      <fileset dir="${polyglot-ide.home}">
+      <fileset dir="${polyglot-ide-base.home}">
         <include name="images/**"/>
         <include name="plugin.xml"/>
       </fileset>
