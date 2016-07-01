@@ -1,6 +1,6 @@
 <!-- Common definitions. -->
 
-<project name="polyglot-ide.common">
+<project name="polyglot-ide.common" xmlns:if="ant:if" xmlns:unless="ant:unless">
   <dirname property="polyglot-ide.home" file="${ant.file.polyglot-ide.common}"/>
 
   <!-- Ensure config.properties exists. -->
@@ -28,9 +28,10 @@
        If polyglot.home is not defined in the properties file, default
        to ${polyglot-ide.home}/../polyglot
   -->
+  <dirname property="polyglot-ide.home.parent" file="${polyglot-ide.home}"/>
   <condition property="polyglot.home"
       value="${config.polyglot.home}"
-      else="${polyglot-ide.home}/../polyglot">
+      else="${polyglot-ide.home.parent}/polyglot">
     <isset property="config.polyglot.home"/>
   </condition>
 
@@ -108,14 +109,15 @@
   Check configuration.
   -->
 
-  <echo message="Polyglot home directory is ${polyglot.home}"/>
-  <echo message="Eclipse home directory is ${eclipse.home}"/>
-
   <!-- Check for presence of Polyglot. -->
   <condition property="polyglot.exists" value="true">
     <available classname="polyglot.main.Version"
         classpathref="polyglot.classpath"/>
   </condition>
+
+  <!-- If Polyglot not found, print out the Polyglot home for debugging. -->
+  <echo unless:true="${polyglot.exists}"
+      message="Polyglot home directory is ${polyglot.home}"/>
 
   <!--
        Error handling: Polyglot not found and polyglot.home not set in
@@ -141,6 +143,10 @@
   <condition property="eclipse.exists" value="true">
     <available file="${eclipse.home}/plugins" type="dir"/>
   </condition>
+
+  <!-- If Eclipse not found, print out the Eclipse home for debugging. -->
+  <echo unless:true="${eclipse.exists}"
+      message="Eclipse home directory is ${eclipse.home}"/>
 
   <!--
        Error handling: Eclipse not found and eclipse.home not set in
@@ -169,7 +175,6 @@
   </tstamp>
   <property name="polyglot-ide.version.build"
       value="${polyglot-ide.version} (${now})"/>
-  <echo message="Polyglot IDE version is ${polyglot-ide.version.build}"/>
 
   <tstamp>
     <format property="timestamp" pattern="yyyyMMddHHmm" timezone="UTC"/>
