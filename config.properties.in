@@ -11,10 +11,11 @@
 # Eclipse installation directory
 #
 # This is optional. Defaults to "/usr/lib/eclipse".
+#
+# To find out where Eclipse plugins live on Mac OS, right-click the eclipse
+# application, and "Show package contents". In the package, look at
+# configuration/config.ini to figure out where your plugins live. It is
+# probably something like "/Users/Alice/.p2/pool".
 
 #eclipse.home=/usr/lib/eclipse
-
-# Mac OS
-# If you right click your eclipse application, then you can "show package contents," 
-# and from there you can see configuration/config.ini to figure out where your plugins live, it is probably something like:
 #eclipse.home=/Users/Alice/.p2/pool
